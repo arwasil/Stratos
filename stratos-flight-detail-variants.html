@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>STRATOS // FLIGHT DETAIL — 5 VARIANTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--surf:#0e0e0e;--panel:#111111;--raise:#161616;
+    --bd:rgba(255,255,255,0.10);--bds:rgba(255,255,255,0.16);
+    --t1:#e0e0e0;--t2:#888888;--t3:#555555;
+    --red:#cc2200;--redb:#ff3300;--redbg:rgba(204,34,0,0.08);--redbd:rgba(204,34,0,0.28);
+    --ok:#22a050;--okbg:rgba(34,160,80,0.10);
+    --warn:#c89020;--warnbg:rgba(200,144,32,0.10);
+    --fn:'Space Mono','Courier New',monospace;
+    --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#080808}
+  body{font-family:var(--fn);font-size:12px;color:#e0e0e0;-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:0.02em;padding:var(--s4)}
+  .label{font-size:9px;font-weight:700;color:#cc2200;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s3);padding-bottom:var(--s2);border-bottom:1px solid var(--redbd)}
+  .variant{max-width:920px;margin-bottom:40px}
+  .detail{background:#111;border:1px solid rgba(204,34,0,0.30);border-top:1px solid rgba(255,255,255,0.08);padding:var(--s3) var(--s4)}
+
+  /* Shared micro-styles */
+  .lbl{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
+  .val{font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.02em;text-transform:uppercase}
+  .val-s{font-size:10px;color:#888}
+  .line{height:1px;background:rgba(255,255,255,0.07)}
+  .sep{border-bottom:1px solid rgba(255,255,255,0.07);padding-bottom:var(--s3);margin-bottom:var(--s3)}
+  .tag-g{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;font-size:10px;font-weight:700;background:rgba(34,160,80,.10);color:#22a050;border:1px solid rgba(34,160,80,.3);letter-spacing:0.04em;text-transform:uppercase}
+  .tag-y{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;font-size:10px;font-weight:700;background:rgba(200,144,32,.10);color:#c89020;border:1px solid rgba(200,144,32,.3);letter-spacing:0.04em;text-transform:uppercase}
+  .ame{display:flex;align-items:center;gap:var(--s1);font-size:10px;color:#888;letter-spacing:0.02em;text-transform:uppercase}
+  .bk-wrap{display:flex;justify-content:flex-end}
+  .bk{display:inline-block;padding:9px 24px;max-width:220px;background:#cc2200;color:#fff;border:none;font-size:11px;font-weight:700;font-family:var(--fn);cursor:pointer;text-align:center;letter-spacing:0.1em;text-transform:uppercase;transition:background 80ms}
+  .bk:hover{background:#ff3300}
+</style>
+</head>
+<body>
+
+<!-- =====================================================
+     VARIANT A — ORIGINAL (reference)
+     Horizontal info strip → horizontal route timeline → amenity row → CTA
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT A // HORIZONTAL STRIP + TIMELINE (ORIGINAL)</div>
+  <div class="detail">
+    <!-- Flight info strip -->
+    <div style="display:flex;gap:var(--s5);padding-bottom:var(--s3);border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:var(--s3);flex-wrap:wrap">
+      <div style="min-width:100px"><div class="lbl">FLIGHT</div><div class="val">Singapore Airlines · SQ37</div></div>
+      <div style="min-width:100px"><div class="lbl">AIRCRAFT</div><div class="val">Boeing 777-300ER</div></div>
+      <div style="min-width:60px"><div class="lbl">CLASS</div><div class="val">ECO</div></div>
+      <div style="min-width:60px"><div class="lbl">MEAL</div><div class="val">INCLUDED</div></div>
+    </div>
+    <!-- Route timeline -->
+    <div style="display:flex;align-items:flex-start;gap:var(--s3);padding-bottom:var(--s3);border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:var(--s3)">
+      <div style="text-align:center;min-width:80px">
+        <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">08:45</div>
+        <div class="val-s" style="margin-top:3px">Singapore Changi (SIN)</div>
+        <div style="font-size:9px;color:#555;margin-top:1px;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:var(--s2);padding-top:6px">
+        <div class="line" style="width:100%"></div>
+        <span class="tag-g">NON-STOP FLIGHT</span>
+        <div class="line" style="width:100%"></div>
+      </div>
+      <div style="text-align:center;min-width:80px">
+        <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">09:15</div>
+        <div class="val-s" style="margin-top:3px">San Francisco Intl (SFO)</div>
+        <div style="font-size:9px;color:#555;margin-top:1px;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T1</div>
+      </div>
+    </div>
+    <!-- Amenities -->
+    <div style="display:flex;gap:var(--s4);flex-wrap:wrap;margin-bottom:var(--s3)">
+      <div class="ame">23KG BAG</div>
+      <div class="ame">STD SEAT</div>
+      <div class="ame">WI-FI</div>
+      <div class="ame">MEAL INCLUDED</div>
+    </div>
+    <div class="bk-wrap"><button class="bk">[[ SELECT FLIGHT ]]</button></div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     VARIANT B — TWO-COLUMN SPLIT
+     Left: vertical timeline / Right: flight info + amenities stacked
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT B // TWO-COLUMN SPLIT — TIMELINE LEFT, INFO RIGHT</div>
+  <div class="detail">
+    <div style="display:flex;gap:var(--s4)">
+      <!-- Left: Vertical timeline -->
+      <div style="flex:0 0 200px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.07);padding-right:var(--s4)">
+        <div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">08:45</div>
+          <div class="val-s">Singapore Changi (SIN)</div>
+          <div style="font-size:9px;color:#555;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T3</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s2);padding:var(--s3) 0">
+          <div style="width:1px;height:40px;background:rgba(255,255,255,0.13)"></div>
+          <div style="display:flex;flex-direction:column;gap:2px;padding-left:var(--s2)">
+            <div style="font-size:10px;color:#555;letter-spacing:0.04em">17H 30M</div>
+            <span class="tag-g" style="font-size:9px">NON-STOP</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">09:15</div>
+          <div class="val-s">San Francisco Intl (SFO)</div>
+          <div style="font-size:9px;color:#555;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T1</div>
+        </div>
+      </div>
+      <!-- Right: Info grid + amenities -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:var(--s3)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)">
+          <div><div class="lbl">FLIGHT</div><div class="val">SQ37</div><div class="val-s">SINGAPORE AIRLINES</div></div>
+          <div><div class="lbl">AIRCRAFT</div><div class="val">777-300ER</div><div class="val-s">BOEING</div></div>
+          <div><div class="lbl">CLASS</div><div class="val">ECONOMY</div></div>
+          <div><div class="lbl">MEAL</div><div class="val">INCLUDED</div></div>
+        </div>
+        <div class="line"></div>
+        <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+          <div class="ame">23KG BAG</div>
+          <div class="ame">STD SEAT</div>
+          <div class="ame">WI-FI</div>
+          <div class="ame">MEAL</div>
+        </div>
+        <div class="bk-wrap"><button class="bk">[[ SELECT FLIGHT ]]</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     VARIANT C — COMPACT SINGLE ROW
+     Everything in one dense row: departure → arrow → arrival | info pills | CTA
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT C // COMPACT SINGLE-ROW — DENSE INLINE</div>
+  <div class="detail" style="padding:var(--s3) var(--s4)">
+    <!-- Row 1: route + info inline -->
+    <div style="display:flex;align-items:center;gap:var(--s4);margin-bottom:var(--s3)">
+      <div style="display:flex;align-items:center;gap:var(--s3)">
+        <div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:-0.02em;line-height:1">08:45</div>
+          <div style="font-size:9px;color:#555;text-transform:uppercase">SIN · T3</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s2)">
+          <div style="width:60px;height:1px;background:rgba(255,255,255,0.13)"></div>
+          <div style="font-size:9px;color:#555;white-space:nowrap">17H 30M</div>
+          <div style="width:60px;height:1px;background:rgba(255,255,255,0.13)"></div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:-0.02em;line-height:1">09:15</div>
+          <div style="font-size:9px;color:#555;text-transform:uppercase">SFO · T1</div>
+        </div>
+      </div>
+      <div style="width:1px;height:24px;background:rgba(255,255,255,0.07)"></div>
+      <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
+        <span class="tag-g" style="font-size:9px">NON-STOP</span>
+        <div style="padding:1px 6px;font-size:9px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">SQ37 · 777-300ER</div>
+        <div style="padding:1px 6px;font-size:9px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">ECO</div>
+      </div>
+    </div>
+    <!-- Row 2: amenities + CTA -->
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;gap:var(--s4)">
+        <div class="ame">23KG BAG</div>
+        <div class="ame">STD SEAT</div>
+        <div class="ame">WI-FI</div>
+        <div class="ame">MEAL</div>
+      </div>
+      <button class="bk" style="padding:7px 20px;font-size:10px">[[ SELECT ]]</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     VARIANT D — BOARDING PASS STYLE
+     Left ticket stub (departure) | center info | right stub (arrival) + bottom strip
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT D // BOARDING PASS — TICKET STUB LAYOUT</div>
+  <div class="detail" style="padding:0;overflow:hidden">
+    <!-- Ticket body -->
+    <div style="display:flex">
+      <!-- Left stub: departure -->
+      <div style="flex:0 0 180px;padding:var(--s4);background:#0e0e0e;border-right:1px dashed rgba(255,255,255,0.10)">
+        <div class="lbl">DEPARTURE</div>
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.03em;line-height:1;margin:var(--s2) 0">08:45</div>
+        <div class="val">SIN</div>
+        <div class="val-s">SINGAPORE CHANGI</div>
+        <div style="font-size:9px;color:#555;margin-top:2px;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T3</div>
+        <div style="margin-top:var(--s3);font-size:9px;color:#555;letter-spacing:0.04em;text-transform:uppercase">14 APR 2026 · MON</div>
+      </div>
+      <!-- Center: flight info -->
+      <div style="flex:1;padding:var(--s4);display:flex;flex-direction:column;justify-content:center;gap:var(--s3)">
+        <div style="display:flex;align-items:center;gap:var(--s3)">
+          <div style="font-size:13px;font-weight:700;letter-spacing:0.04em">SQ37</div>
+          <div style="font-size:10px;color:#555;letter-spacing:0.04em;text-transform:uppercase">SINGAPORE AIRLINES</div>
+          <span class="tag-g" style="font-size:9px;margin-left:auto">NON-STOP</span>
+        </div>
+        <div class="line"></div>
+        <div style="display:flex;gap:var(--s4)">
+          <div><div class="lbl">AIRCRAFT</div><div class="val">777-300ER</div></div>
+          <div><div class="lbl">CLASS</div><div class="val">ECONOMY</div></div>
+          <div><div class="lbl">DURATION</div><div class="val">17H 30M</div></div>
+          <div><div class="lbl">MEAL</div><div class="val">INCLUDED</div></div>
+        </div>
+        <div class="line"></div>
+        <div style="display:flex;gap:var(--s4)">
+          <div class="ame">23KG BAG</div>
+          <div class="ame">STD SEAT</div>
+          <div class="ame">WI-FI</div>
+        </div>
+      </div>
+      <!-- Right stub: arrival -->
+      <div style="flex:0 0 180px;padding:var(--s4);background:#0e0e0e;border-left:1px dashed rgba(255,255,255,0.10)">
+        <div class="lbl">ARRIVAL</div>
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.03em;line-height:1;margin:var(--s2) 0">09:15</div>
+        <div class="val">SFO</div>
+        <div class="val-s">SAN FRANCISCO INTL</div>
+        <div style="font-size:9px;color:#555;margin-top:2px;letter-spacing:0.04em;text-transform:uppercase">TERMINAL T1</div>
+        <div style="margin-top:var(--s3);font-size:9px;color:#555;letter-spacing:0.04em;text-transform:uppercase">14 APR 2026 · MON</div>
+      </div>
+    </div>
+    <!-- Bottom CTA bar -->
+    <div style="border-top:1px solid rgba(255,255,255,0.07);padding:var(--s2) var(--s4);display:flex;align-items:center;justify-content:space-between;background:#0e0e0e">
+      <div style="font-size:10px;color:#555;letter-spacing:0.04em">BOOKING REF GENERATED ON SELECTION</div>
+      <button class="bk" style="padding:7px 20px;font-size:10px">[[ SELECT FLIGHT ]]</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     VARIANT E — VERTICAL STACK
+     Stacked sections: route block → details grid → amenities → CTA
+     Clean vertical rhythm, no columns
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT E // VERTICAL STACK — FULL-WIDTH SECTIONS</div>
+  <div class="detail">
+    <!-- Route block — large type -->
+    <div style="display:flex;align-items:baseline;gap:var(--s3);padding-bottom:var(--s3);border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:var(--s3)">
+      <div style="font-size:22px;font-weight:700;letter-spacing:-0.03em;line-height:1">08:45</div>
+      <div style="font-size:10px;color:#555;text-transform:uppercase">SIN · T3</div>
+      <div style="flex:1;display:flex;align-items:center;gap:var(--s2);padding:0 var(--s3)">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.10)"></div>
+        <div style="font-size:10px;font-weight:700;color:#555;letter-spacing:0.06em;white-space:nowrap">17H 30M · NON-STOP</div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.10)"></div>
+      </div>
+      <div style="font-size:10px;color:#555;text-transform:uppercase">SFO · T1</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-0.03em;line-height:1">09:15</div>
+    </div>
+    <!-- Details grid — full-width row -->
+    <div style="display:flex;gap:0;padding-bottom:var(--s3);border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:var(--s3)">
+      <div style="flex:1;padding-right:var(--s3);border-right:1px solid rgba(255,255,255,0.07)"><div class="lbl">AIRLINE</div><div class="val">SINGAPORE AIRLINES</div></div>
+      <div style="flex:0.5;padding:0 var(--s3);border-right:1px solid rgba(255,255,255,0.07)"><div class="lbl">FLIGHT</div><div class="val">SQ37</div></div>
+      <div style="flex:1;padding:0 var(--s3);border-right:1px solid rgba(255,255,255,0.07)"><div class="lbl">AIRCRAFT</div><div class="val">BOEING 777-300ER</div></div>
+      <div style="flex:0.5;padding:0 var(--s3);border-right:1px solid rgba(255,255,255,0.07)"><div class="lbl">CLASS</div><div class="val">ECO</div></div>
+      <div style="flex:0.5;padding-left:var(--s3)"><div class="lbl">MEAL</div><div class="val">INCLUDED</div></div>
+    </div>
+    <!-- Amenities — tag style -->
+    <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)">
+      <div style="padding:2px 8px;font-size:10px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">23KG BAG</div>
+      <div style="padding:2px 8px;font-size:10px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">STD SEAT</div>
+      <div style="padding:2px 8px;font-size:10px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">WI-FI</div>
+      <div style="padding:2px 8px;font-size:10px;font-weight:700;color:#555;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.04em;text-transform:uppercase">MEAL</div>
+    </div>
+    <div class="bk-wrap"><button class="bk">[[ SELECT FLIGHT ]]</button></div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     VARIANT F — SIDEBAR PRICE CARD
+     Left: full detail area / Right: sticky price + CTA card
+     ===================================================== -->
+<div class="variant">
+  <div class="label">VARIANT F // SIDEBAR PRICE CARD — INFO LEFT, PRICE RIGHT</div>
+  <div class="detail" style="padding:0;overflow:hidden">
+    <div style="display:flex">
+      <!-- Left: all info -->
+      <div style="flex:1;padding:var(--s3) var(--s4)">
+        <!-- Route -->
+        <div style="display:flex;align-items:flex-start;gap:var(--s3);margin-bottom:var(--s3)">
+          <div>
+            <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">08:45</div>
+            <div class="val-s" style="margin-top:2px">SIN · Terminal T3</div>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;gap:var(--s2);padding-top:6px">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.13)"></div>
+            <div style="font-size:9px;color:#555;white-space:nowrap">17H 30M · NON-STOP</div>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.13)"></div>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1">09:15</div>
+            <div class="val-s" style="margin-top:2px">SFO · Terminal T1</div>
+          </div>
+        </div>
+        <div class="line" style="margin-bottom:var(--s3)"></div>
+        <!-- Info row -->
+        <div style="display:flex;gap:var(--s4);margin-bottom:var(--s3)">
+          <div><div class="lbl">FLIGHT</div><div class="val">SQ37</div></div>
+          <div><div class="lbl">AIRCRAFT</div><div class="val">777-300ER</div></div>
+          <div><div class="lbl">CLASS</div><div class="val">ECO</div></div>
+          <div><div class="lbl">MEAL</div><div class="val">INCLUDED</div></div>
+        </div>
+        <div class="line" style="margin-bottom:var(--s3)"></div>
+        <!-- Amenities -->
+        <div style="display:flex;gap:var(--s4)">
+          <div class="ame">23KG BAG</div>
+          <div class="ame">STD SEAT</div>
+          <div class="ame">WI-FI</div>
+          <div class="ame">MEAL</div>
+        </div>
+      </div>
+      <!-- Right: price + CTA card -->
+      <div style="flex:0 0 200px;background:#0e0e0e;border-left:1px solid rgba(255,255,255,0.07);padding:var(--s4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s3);text-align:center">
+        <div class="lbl">TOTAL PRICE</div>
+        <div style="font-size:28px;font-weight:700;letter-spacing:-0.03em;line-height:1">$2,840</div>
+        <div class="val-s">PER PASSENGER · ECO</div>
+        <span class="tag-g" style="margin-top:var(--s2)">WITHIN BUDGET</span>
+        <button class="bk" style="width:100%;margin-top:var(--s2);padding:10px">[[ SELECT ]]</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

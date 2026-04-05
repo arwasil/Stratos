@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>STRATOS // DASHBOARD OPS</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--surf:#0e0e0e;--panel:#111111;--raise:#161616;
+    --bd:rgba(255,255,255,0.10);--bds:rgba(255,255,255,0.16);
+    --t1:#e0e0e0;--t2:#888888;--t3:#555555;
+    --red:#cc2200;--redb:#ff3300;--redbg:rgba(204,34,0,0.08);--redbd:rgba(204,34,0,0.28);
+    --ok:#22a050;--okbg:rgba(34,160,80,0.10);
+    --warn:#c89020;--warnbg:rgba(200,144,32,0.10);
+    --fn:'Space Mono','Courier New',monospace;
+    --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{color-scheme:dark}
+  html,body{background:#080808}
+  body{font-family:var(--fn);font-size:12px;color:#e0e0e0;-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:0.02em;min-height:100vh;display:flex;flex-direction:column}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 1px,rgba(0,0,0,0.025) 1px,rgba(0,0,0,0.025) 2px);pointer-events:none;z-index:9999}
+  @keyframes pageFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .page-content{animation:pageFadeIn 350ms ease-out;flex:1;display:flex}
+  .page-content.fade-out{opacity:0;transform:translateY(-6px);transition:opacity 200ms ease-in,transform 200ms ease-in}
+  
+  /* === CORNER MARK SYSTEM === */
+  .cm{position:relative;border:1px solid rgba(255,255,255,0.10)!important}
+  .cm::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:2;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.60) 10px,transparent 10px) 0 0/10px 2px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.60) 10px,transparent 10px) 0 0/2px 10px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.60) 10px,transparent 10px) 100% 0/10px 2px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.60) 10px,transparent 10px) 100% 0/2px 10px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.60) 10px,transparent 10px) 0 100%/10px 2px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.60) 10px,transparent 10px) 0 100%/2px 10px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.60) 10px,transparent 10px) 100% 100%/10px 2px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.60) 10px,transparent 10px) 100% 100%/2px 10px no-repeat;
+  }
+  .cm:hover{border-color:rgba(255,255,255,0.18)!important}
+  .cm:hover::before{
+    background:
+      linear-gradient(to right,rgba(204,34,0,.85) 10px,transparent 10px) 0 0/10px 2px no-repeat,
+      linear-gradient(to bottom,rgba(204,34,0,.85) 10px,transparent 10px) 0 0/2px 10px no-repeat,
+      linear-gradient(to left,rgba(204,34,0,.85) 10px,transparent 10px) 100% 0/10px 2px no-repeat,
+      linear-gradient(to bottom,rgba(204,34,0,.85) 10px,transparent 10px) 100% 0/2px 10px no-repeat,
+      linear-gradient(to right,rgba(204,34,0,.85) 10px,transparent 10px) 0 100%/10px 2px no-repeat,
+      linear-gradient(to top,rgba(204,34,0,.85) 10px,transparent 10px) 0 100%/2px 10px no-repeat,
+      linear-gradient(to left,rgba(204,34,0,.85) 10px,transparent 10px) 100% 100%/10px 2px no-repeat,
+      linear-gradient(to top,rgba(204,34,0,.85) 10px,transparent 10px) 100% 100%/2px 10px no-repeat;
+  }
+  /* Red corners for policy/alert banners */
+  .cm-red{position:relative;border:1px solid rgba(204,34,0,0.25)!important}
+  .cm-red::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:2;
+    background:
+      linear-gradient(to right,#cc2200 10px,transparent 10px) 0 0/10px 2px no-repeat,
+      linear-gradient(to bottom,#cc2200 10px,transparent 10px) 0 0/2px 10px no-repeat,
+      linear-gradient(to left,#cc2200 10px,transparent 10px) 100% 0/10px 2px no-repeat,
+      linear-gradient(to bottom,#cc2200 10px,transparent 10px) 100% 0/2px 10px no-repeat,
+      linear-gradient(to right,#cc2200 10px,transparent 10px) 0 100%/10px 2px no-repeat,
+      linear-gradient(to top,#cc2200 10px,transparent 10px) 0 100%/2px 10px no-repeat,
+      linear-gradient(to left,#cc2200 10px,transparent 10px) 100% 100%/10px 2px no-repeat,
+      linear-gradient(to top,#cc2200 10px,transparent 10px) 100% 100%/2px 10px no-repeat;
+  }
+
+
+  /* TOPBAR */
+  .topbar{height:40px;background:#0e0e0e;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 var(--s4);gap:var(--s4);position:sticky;top:0;z-index:50;flex-shrink:0}
+  .logo{display:flex;align-items:center;gap:var(--s2);font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.1em;text-transform:uppercase;margin-right:var(--s4)}
+  .lm{width:18px;height:18px;border:1px solid #cc2200;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#cc2200;flex-shrink:0}
+  .nav{display:flex;align-items:center;gap:2px}
+  .nl{display:flex;align-items:center;gap:var(--s2);padding:4px 10px;font-size:11px;color:#888;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;border:1px solid transparent;text-decoration:none}
+  .nl:hover{color:#e0e0e0;border-color:var(--bd)}
+  .nl.on{color:#cc2200;border-color:var(--redbd);background:var(--redbg)}
+  .nl svg{fill:#888} .nl.on svg{fill:#cc2200}
+  .tr{margin-left:auto;display:flex;align-items:center;gap:var(--s3)}
+  .sys{font-size:10px;color:#555;letter-spacing:0.06em;display:flex;align-items:center;gap:var(--s2)}
+  .dot{width:5px;height:5px;border-radius:50%;background:#22a050;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  .ava{width:24px;height:24px;border:1px solid #cc2200;font-size:9px;font-weight:700;color:#cc2200;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .shell{display:flex;flex:1}
+
+  /* SIDEBAR */
+  .sidebar{width:200px;flex-shrink:0;background:#0e0e0e;border-right:1px solid var(--bd);display:flex;flex-direction:column;position:sticky;top:40px;height:calc(100vh - 40px);overflow-y:auto}
+  .sb-inner{padding:var(--s3) 0;display:flex;flex-direction:column;height:100%}
+  .nav-group{padding:0 var(--s2);margin-bottom:var(--s3)}
+  .nav-gl{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;padding:0 var(--s2);line-height:2.5}
+  .nav-link{display:flex;align-items:center;gap:var(--s2);padding:4px var(--s2);font-size:11px;color:#888;cursor:pointer;letter-spacing:0.04em;text-transform:uppercase;border-left:2px solid transparent;text-decoration:none}
+  .nav-link:hover{color:#e0e0e0;background:#111}
+  .nav-link.on{color:#cc2200;border-left-color:#cc2200;background:var(--redbg)}
+  .nav-link.on svg{fill:#cc2200} .nav-link svg{fill:#888}
+  .nav-ct{margin-left:auto;font-size:10px;color:#555;background:#161616;padding:1px 5px}
+  .sb-user{margin-top:auto;border-top:1px solid var(--bd);padding:var(--s3) var(--s4);display:flex;align-items:center;gap:var(--s2);cursor:pointer}
+  .sb-user:hover{background:#111}
+  .u-ava{width:20px;height:20px;border:1px solid var(--bds);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#888;flex-shrink:0}
+  .u-name{font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.04em;text-transform:uppercase}
+  .u-role{font-size:10px;color:#555}
+
+  /* MAIN */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;background:#080808}
+  .itop{height:38px;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 var(--s4);gap:var(--s3);background:#0e0e0e;flex-shrink:0}
+  .bc{font-size:11px;color:#555;display:flex;align-items:center;gap:5px;letter-spacing:0.04em;text-transform:uppercase}
+  .bc b{color:#e0e0e0;font-weight:700}
+  .itr{margin-left:auto;display:flex;align-items:center;gap:var(--s2)}
+  .tbtn{background:#111;border:1px solid var(--bds);padding:3px 10px;font-size:10px;font-weight:700;color:#888;font-family:var(--fn);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;display:flex;align-items:center;gap:var(--s2)}
+  .tbtn svg{fill:#888} .tbtn:hover{color:#e0e0e0}
+  .tbtn-red{background:#cc2200;color:#fff;border-color:#cc2200} .tbtn-red svg{fill:#fff} .tbtn-red:hover{background:#ff3300}
+
+  /* PAGE */
+  .page{padding:var(--s4);flex:1}
+  .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--s4)}
+  .pt{font-size:13px;font-weight:700;color:#e0e0e0;letter-spacing:0.04em;text-transform:uppercase}
+  .psub{font-size:10px;color:#888;margin-top:3px;letter-spacing:0.04em}
+  .ph-r{display:flex;align-items:center;gap:1px}
+  .pd{background:#111;border:1px solid var(--bd);padding:2px 8px;font-size:10px;font-weight:700;color:#555;font-family:var(--fn);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase}
+  .pd.on{border-color:var(--redbd);color:#cc2200;background:var(--redbg)}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:var(--s4)}
+  .stat{background:#111;padding:var(--s3) var(--s4);position:relative}
+  /* Stats also get corner marks */
+  .stat::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:1;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+  .stat-label{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--s2)}
+  .stat-val{font-size:22px;font-weight:700;color:#e0e0e0;letter-spacing:-0.03em;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
+  .stat-delta{font-size:10px;font-weight:700;display:flex;align-items:center;gap:3px;letter-spacing:0.04em;text-transform:uppercase}
+  .up{color:#22a050} .dn{color:#cc2200} .fl{color:#555}
+  .up svg{fill:#22a050} .dn svg{fill:#cc2200}
+
+  /* PANEL */
+  .panel{background:#111;border:1px solid rgba(255,255,255,0.10);overflow:hidden;margin-bottom:var(--s4);position:relative}
+  .panel::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:1;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+  .ph2{display:flex;align-items:center;justify-content:space-between;padding:var(--s2) var(--s3);border-bottom:1px solid var(--bd);background:#0e0e0e}
+  .ptitle{font-size:10px;font-weight:700;color:#e0e0e0;letter-spacing:0.08em;text-transform:uppercase}
+  .pacts{display:flex;align-items:center;gap:var(--s2)}
+  .p-link{font-size:10px;color:#cc2200;cursor:pointer;letter-spacing:0.04em;text-transform:uppercase}
+  .seg{display:flex;gap:1px;background:rgba(255,255,255,0.06)}
+  .seg-i{padding:2px 10px;font-size:10px;font-weight:700;color:#555;cursor:pointer;background:#0e0e0e;letter-spacing:0.06em;text-transform:uppercase}
+  .seg-i.on{background:#161616;color:#e0e0e0}
+
+  /* TABLE */
+  .tbl{width:100%;border-collapse:collapse}
+  .tbl thead th{padding:6px var(--s3);text-align:left;font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--bd);background:#0e0e0e;white-space:nowrap}
+  .tbl tbody tr{border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer}
+  .tbl tbody tr:last-child{border-bottom:none}
+  .tbl tbody tr:hover{background:#161616}
+  .tbl td{padding:8px var(--s3);font-size:11px;color:#e0e0e0;vertical-align:middle}
+  .t2c{color:#888} .t3c{color:#555;font-size:10px;margin-top:1px}
+  .tmono{font-variant-numeric:tabular-nums;font-size:11px;color:#888}
+  .trav{display:flex;align-items:center;gap:var(--s2)}
+  .tav{width:20px;height:20px;border:1px solid rgba(255,255,255,0.13);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#e0e0e0;flex-shrink:0}
+  .tn{font-size:11px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase}
+  .td2{font-size:10px;color:#888;margin-top:1px}
+  .ra{font-size:12px;font-weight:700;letter-spacing:0.02em}
+  .rb{font-size:10px;color:#888;margin-top:1px}
+  .pbar{width:50px;height:2px;background:#161616}
+  .pbar-f{height:100%}
+  .badge{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;font-size:10px;font-weight:700;white-space:nowrap;border:1px solid;letter-spacing:0.04em;text-transform:uppercase}
+  .badge svg{flex-shrink:0}
+  .b-ok{background:rgba(34,160,80,0.10);color:#22a050;border-color:rgba(34,160,80,0.3)} .b-ok svg{fill:#22a050}
+  .b-warn{background:rgba(200,144,32,0.10);color:#c89020;border-color:rgba(200,144,32,0.3)}
+  .b-red{background:rgba(204,34,0,0.08);color:#cc2200;border-color:rgba(204,34,0,0.28)} .b-red svg{fill:#cc2200}
+  .b-dim{background:rgba(255,255,255,0.04);color:#555;border-color:rgba(255,255,255,0.10)}
+
+  /* SPLIT */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+  .ri{display:flex;align-items:center;gap:var(--s3);padding:8px var(--s3);border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer}
+  .ri:last-child{border-bottom:none}
+  .ri:hover{background:#161616}
+  .ri-ico{width:24px;height:24px;border:1px solid rgba(255,255,255,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ri-ico svg{fill:#888}
+  .ri-body{flex:1;min-width:0}
+  .ri-t{font-size:11px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;color:#e0e0e0}
+  .ri-s{font-size:10px;color:#888;margin-top:1px}
+  .ri-r{flex-shrink:0;text-align:right}
+  .ri-v{font-size:12px;font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:#e0e0e0}
+  .ri-m{font-size:10px;color:#888;margin-top:1px;text-transform:uppercase}
+  .ri-btn{background:#111;border:1px solid rgba(255,255,255,0.16);padding:3px 8px;font-size:9px;font-weight:700;color:#888;font-family:var(--fn);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase}
+  .ri-btn:hover{color:#e0e0e0}
+  .ri-btn-red{background:#cc2200;color:#fff;border-color:#cc2200} .ri-btn-red:hover{background:#ff3300}
+
+  /* MOBILE */
+  @media(max-width:768px){
+    .topbar{display:none}
+    .sidebar{display:none}
+    .page{padding:var(--s3)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat-val{font-size:18px}
+    .ph{flex-direction:column;gap:var(--s3)}
+    .split{grid-template-columns:1fr}
+    .col-pol,.col-date{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><div class="lm">S</div>STRATOS</div>
+  <nav class="nav">
+    <a class="nl on" href="stratos-dashboard.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>DASHBOARD</a>
+    <a class="nl" href="stratos-serp-flights.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M235.58,128.84,160,91.06V48a32,32,0,0,0-64,0V91.06L20.42,128.84A8,8,0,0,0,16,136v32a8,8,0,0,0,9.57,7.84L96,161.76v18.93L82.34,194.34A8,8,0,0,0,80,200v32a8,8,0,0,0,11,7.43l37-14.81,37,14.81A8,8,0,0,0,176,232V200a8,8,0,0,0-2.34-5.66L160,180.69V161.76l70.43,14.08A8,8,0,0,0,240,168V136A8,8,0,0,0,235.58,128.84ZM224,158.24l-70.43-14.08A8,8,0,0,0,144,152v32a8,8,0,0,0,2.34,5.66L160,203.31v16.87l-29-11.61a8,8,0,0,0-5.94,0L96,220.18V203.31l13.66-13.65A8,8,0,0,0,112,184V152a8,8,0,0,0-9.57-7.84L32,158.24v-17.3l75.58-37.78A8,8,0,0,0,112,96V48a16,16,0,0,1,32,0V96a8,8,0,0,0,4.42,7.16L224,140.94Z"/></svg>FLIGHTS</a>
+    <a class="nl" href="stratos-trips.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H216Z"/></svg>TRIPS</a>
+    <a class="nl" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></svg>EXPENSES</a>
+    <a class="nl" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>REPORTS</a>
+  </nav>
+  <div class="tr">
+    <div class="sys"><div class="dot"></div>SYS.ONLINE</div>
+    <div class="ava">AW</div>
+  </div>
+</div>
+
+<div class="page-content">
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-inner">
+    <div class="nav-group">
+      <div class="nav-gl">// OVERVIEW</div>
+      <a class="nav-link on" href="stratos-dashboard.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>DASHBOARD</a>
+      <a class="nav-link" href="stratos-trips.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M235.58,128.84,160,91.06V48a32,32,0,0,0-64,0V91.06L20.42,128.84A8,8,0,0,0,16,136v32a8,8,0,0,0,9.57,7.84L96,161.76v18.93L82.34,194.34A8,8,0,0,0,80,200v32a8,8,0,0,0,11,7.43l37-14.81,37,14.81A8,8,0,0,0,176,232V200a8,8,0,0,0-2.34-5.66L160,180.69V161.76l70.43,14.08A8,8,0,0,0,240,168V136A8,8,0,0,0,235.58,128.84ZM224,158.24l-70.43-14.08A8,8,0,0,0,144,152v32a8,8,0,0,0,2.34,5.66L160,203.31v16.87l-29-11.61a8,8,0,0,0-5.94,0L96,220.18V203.31l13.66-13.65A8,8,0,0,0,112,184V152a8,8,0,0,0-9.57-7.84L32,158.24v-17.3l75.58-37.78A8,8,0,0,0,112,96V48a16,16,0,0,1,32,0V96a8,8,0,0,0,4.42,7.16L224,140.94Z"/></svg>TRIPS<span class="nav-ct">24</span></a>
+      <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></svg>EXPENSES<span class="nav-ct">8</span></a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-gl">// MANAGE</div>
+      <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"/></svg>TRAVELERS</a>
+      <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></svg>POLICIES</a>
+      <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>REPORTS</a>
+      <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"/></svg>SETTINGS</a>
+    </div>
+    <div class="sb-user">
+      <div class="u-ava">AW</div>
+      <div><div class="u-name">ACHMAD WASIL</div><div class="u-role">ADMIN · STRATOS</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="itop">
+    <div class="bc">STRATOS <span style="opacity:.3">›</span> <b>DASHBOARD</b></div>
+    <div class="itr">
+      <div class="tbtn"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>SEARCH</div>
+      <div class="tbtn"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"/></svg>EXPORT</div>
+      <div class="tbtn tbtn-red"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></svg>BOOK TRIP</div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="ph">
+      <div><div class="pt">GOOD MORNING, WASIL //</div><div class="psub">TRAVEL PROGRAM STATUS · APR 2026</div></div>
+      <div class="ph-r"><div class="pd on">1D</div><div class="pd">1W</div><div class="pd">1M</div></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">TOTAL SPEND</div>
+        <div class="stat-val" data-tick="48320" data-prefix="$" data-comma>0</div>
+        <div class="stat-delta up"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M240,56v64a8,8,0,0,1-16,0V75.31l-82.34,82.35a8,8,0,0,1-11.32,0L96,123.31,29.66,189.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0L136,140.69,212.69,64H168a8,8,0,0,1,0-16h64A8,8,0,0,1,240,56Z"/></svg>+12.4% VS LAST MO</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">ACTIVE TRIPS</div>
+        <div class="stat-val" data-tick="24">0</div>
+        <div class="stat-delta fl">6 IN PROGRESS NOW</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">PENDING APPROVALS</div>
+        <div class="stat-val" data-tick="8">0</div>
+        <div class="stat-delta dn"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></svg>3 OVERDUE &gt;48H</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">POLICY COMPLIANCE</div>
+        <div class="stat-val" data-tick="91" data-suffix="%">0</div>
+        <div class="stat-delta up"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M240,56v64a8,8,0,0,1-16,0V75.31l-82.34,82.35a8,8,0,0,1-11.32,0L96,123.31,29.66,189.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0L136,140.69,212.69,64H168a8,8,0,0,1,0-16h64A8,8,0,0,1,240,56Z"/></svg>+3% THIS MONTH</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph2">
+        <span class="ptitle">// RECENT TRIPS</span>
+        <div class="pacts">
+          <div class="seg"><div class="seg-i on">ALL</div><div class="seg-i">UPCOMING</div><div class="seg-i">DONE</div></div>
+          <span class="p-link">VIEW ALL ›</span>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>TRAVELER</th><th>ROUTE</th>
+              <th class="col-date">DATES</th>
+              <th class="col-cost">COST</th>
+              <th class="col-pol">POLICY</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="trav"><div class="tav" style="background:#1a1030">VR</div><div><div class="tn">VINAY RAO</div><div class="td2">ENGINEERING</div></div></div></td>
+              <td><div class="ra">SIN → SFO</div><div class="rb">SINGAPORE AIRLINES</div></td>
+              <td class="col-date t2c">APR 8–14</td>
+              <td class="col-cost"><div style="font-weight:700">$3,240</div><div class="tmono">SGD 4,380</div></td>
+              <td class="col-pol"><div class="pbar"><div class="pbar-f" style="width:100%;background:#22a050"></div></div></td>
+              <td><span class="badge b-ok"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>APPROVED</span></td>
+            </tr>
+            <tr>
+              <td><div class="trav"><div class="tav" style="background:#201008">PL</div><div><div class="tn">PRIYA LIM</div><div class="td2">SALES</div></div></div></td>
+              <td><div class="ra">KUL → DXB</div><div class="rb">AIRASIA X</div></td>
+              <td class="col-date t2c">APR 10–13</td>
+              <td class="col-cost"><div style="font-weight:700">$890</div><div class="tmono">MYR 4,100</div></td>
+              <td class="col-pol"><div class="pbar"><div class="pbar-f" style="width:70%;background:#c89020"></div></div></td>
+              <td><span class="badge b-warn">PENDING</span></td>
+            </tr>
+            <tr>
+              <td><div class="trav"><div class="tav" style="background:#081808">AK</div><div><div class="tn">ARJUN KUMAR</div><div class="td2">PRODUCT</div></div></div></td>
+              <td><div class="ra">BLR → SIN</div><div class="rb">INDIGO + SCOOT</div></td>
+              <td class="col-date t2c">APR 5–7</td>
+              <td class="col-cost"><div style="font-weight:700">$1,120</div><div class="tmono">INR 93,200</div></td>
+              <td class="col-pol"><div class="pbar"><div class="pbar-f" style="width:100%;background:#22a050"></div></div></td>
+              <td><span class="badge b-ok"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>COMPLETED</span></td>
+            </tr>
+            <tr>
+              <td><div class="trav"><div class="tav" style="background:#200808">SM</div><div><div class="tn">SARAH MEHTA</div><div class="td2">FINANCE</div></div></div></td>
+              <td><div class="ra">SIN → HKG → NRT</div><div class="rb">CATHAY PACIFIC</div></td>
+              <td class="col-date t2c">APR 15–22</td>
+              <td class="col-cost"><div style="font-weight:700">$5,840</div><div class="tmono">SGD 7,920</div></td>
+              <td class="col-pol"><div class="pbar"><div class="pbar-f" style="width:38%;background:#cc2200"></div></div></td>
+              <td><span class="badge b-red"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></svg>OUT OF POLICY</span></td>
+            </tr>
+            <tr>
+              <td><div class="trav"><div class="tav" style="background:#081020">JT</div><div><div class="tn">JOEL TAN</div><div class="td2">DESIGN</div></div></div></td>
+              <td><div class="ra">SIN → CGK</div><div class="rb">GARUDA INDONESIA</div></td>
+              <td class="col-date t2c">APR 18–20</td>
+              <td class="col-cost"><div style="font-weight:700">$340</div><div class="tmono">SGD 460</div></td>
+              <td class="col-pol"><div class="pbar"><div class="pbar-f" style="width:15%;background:rgba(255,255,255,0.16)"></div></div></td>
+              <td><span class="badge b-dim">DRAFT</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <div class="ph2"><span class="ptitle">// TOP ROUTES</span><span class="p-link">THIS QTR ›</span></div>
+        <div class="ri">
+          <div class="ri-ico" style="border-color:rgba(204,34,0,.3)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#cc2200" style="display:block;flex-shrink:0"><path d="M176,216a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16H168A8,8,0,0,1,176,216ZM247.86,93.15a8,8,0,0,1-3.76,5.39l-147.41,88a40.18,40.18,0,0,1-20.26,5.52,39.78,39.78,0,0,1-27.28-10.87l-.12-.12L13,145.8a16,16,0,0,1,4.49-26.21l3-1.47a8,8,0,0,1,6.08-.4l28.26,9.54L75,115.06,53.17,93.87A16,16,0,0,1,57.7,67.4l.32-.13,7.15-2.71a8,8,0,0,1,5.59,0L124.7,84.38,176.27,53.6a39.82,39.82,0,0,1,51.28,9.12l.12.15,18.64,23.89A8,8,0,0,1,247.86,93.15Zm-19.74-3.7-13-16.67a23.88,23.88,0,0,0-30.68-5.42l-54.8,32.72a8.06,8.06,0,0,1-6.87.64L68,80.58l-4,1.53.21.2L93.57,110.8a8,8,0,0,1-1.43,12.58L59.93,142.87a8,8,0,0,1-6.7.73l-28.67-9.67-.19.1-.37.17a.71.71,0,0,1,.13.12l36,35.26a23.85,23.85,0,0,0,28.42,3.18Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">SIN → SFO</div><div class="ri-s">12 BOOKINGS · AVG $3,100</div></div>
+          <div class="ri-r"><div class="ri-v">$37,200</div><div class="ri-m">MOST EXP.</div></div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico" style="border-color:rgba(34,160,80,.3)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#22a050" style="display:block;flex-shrink:0"><path d="M176,216a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16H168A8,8,0,0,1,176,216ZM247.86,93.15a8,8,0,0,1-3.76,5.39l-147.41,88a40.18,40.18,0,0,1-20.26,5.52,39.78,39.78,0,0,1-27.28-10.87l-.12-.12L13,145.8a16,16,0,0,1,4.49-26.21l3-1.47a8,8,0,0,1,6.08-.4l28.26,9.54L75,115.06,53.17,93.87A16,16,0,0,1,57.7,67.4l.32-.13,7.15-2.71a8,8,0,0,1,5.59,0L124.7,84.38,176.27,53.6a39.82,39.82,0,0,1,51.28,9.12l.12.15,18.64,23.89A8,8,0,0,1,247.86,93.15Zm-19.74-3.7-13-16.67a23.88,23.88,0,0,0-30.68-5.42l-54.8,32.72a8.06,8.06,0,0,1-6.87.64L68,80.58l-4,1.53.21.2L93.57,110.8a8,8,0,0,1-1.43,12.58L59.93,142.87a8,8,0,0,1-6.7.73l-28.67-9.67-.19.1-.37.17a.71.71,0,0,1,.13.12l36,35.26a23.85,23.85,0,0,0,28.42,3.18Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">SIN → CGK</div><div class="ri-s">34 BOOKINGS · AVG $320</div></div>
+          <div class="ri-r"><div class="ri-v">$10,880</div><div class="ri-m">MOST FREQ.</div></div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#555" style="display:block;flex-shrink:0"><path d="M176,216a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16H168A8,8,0,0,1,176,216ZM247.86,93.15a8,8,0,0,1-3.76,5.39l-147.41,88a40.18,40.18,0,0,1-20.26,5.52,39.78,39.78,0,0,1-27.28-10.87l-.12-.12L13,145.8a16,16,0,0,1,4.49-26.21l3-1.47a8,8,0,0,1,6.08-.4l28.26,9.54L75,115.06,53.17,93.87A16,16,0,0,1,57.7,67.4l.32-.13,7.15-2.71a8,8,0,0,1,5.59,0L124.7,84.38,176.27,53.6a39.82,39.82,0,0,1,51.28,9.12l.12.15,18.64,23.89A8,8,0,0,1,247.86,93.15Zm-19.74-3.7-13-16.67a23.88,23.88,0,0,0-30.68-5.42l-54.8,32.72a8.06,8.06,0,0,1-6.87.64L68,80.58l-4,1.53.21.2L93.57,110.8a8,8,0,0,1-1.43,12.58L59.93,142.87a8,8,0,0,1-6.7.73l-28.67-9.67-.19.1-.37.17a.71.71,0,0,1,.13.12l36,35.26a23.85,23.85,0,0,0,28.42,3.18Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">SIN → BLR</div><div class="ri-s">18 BOOKINGS · AVG $680</div></div>
+          <div class="ri-r"><div class="ri-v">$12,240</div></div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#555" style="display:block;flex-shrink:0"><path d="M176,216a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16H168A8,8,0,0,1,176,216ZM247.86,93.15a8,8,0,0,1-3.76,5.39l-147.41,88a40.18,40.18,0,0,1-20.26,5.52,39.78,39.78,0,0,1-27.28-10.87l-.12-.12L13,145.8a16,16,0,0,1,4.49-26.21l3-1.47a8,8,0,0,1,6.08-.4l28.26,9.54L75,115.06,53.17,93.87A16,16,0,0,1,57.7,67.4l.32-.13,7.15-2.71a8,8,0,0,1,5.59,0L124.7,84.38,176.27,53.6a39.82,39.82,0,0,1,51.28,9.12l.12.15,18.64,23.89A8,8,0,0,1,247.86,93.15Zm-19.74-3.7-13-16.67a23.88,23.88,0,0,0-30.68-5.42l-54.8,32.72a8.06,8.06,0,0,1-6.87.64L68,80.58l-4,1.53.21.2L93.57,110.8a8,8,0,0,1-1.43,12.58L59.93,142.87a8,8,0,0,1-6.7.73l-28.67-9.67-.19.1-.37.17a.71.71,0,0,1,.13.12l36,35.26a23.85,23.85,0,0,0,28.42,3.18Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">KUL → DXB</div><div class="ri-s">9 BOOKINGS · AVG $920</div></div>
+          <div class="ri-r"><div class="ri-v">$8,280</div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph2">
+          <span class="ptitle">// NEEDS ATTENTION</span>
+          <span class="badge b-warn" style="font-size:9px">8 PENDING</span>
+        </div>
+        <div class="ri">
+          <div class="ri-ico" style="border-color:rgba(200,144,32,.3)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#c89020" style="display:block;flex-shrink:0"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">PRIYA LIM — KUL→DXB</div><div class="ri-s">WAITING 26H · $890</div></div>
+          <div class="ri-btn ri-btn-red">APPROVE</div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico" style="border-color:rgba(204,34,0,.3)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#cc2200" style="display:block;flex-shrink:0"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">SARAH MEHTA — OUT OF POLICY</div><div class="ri-s">BIZ CLASS · 38% OVER BUDGET</div></div>
+          <div class="ri-btn">REVIEW</div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#555" style="display:block;flex-shrink:0"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">Q2 POLICY UPDATE</div><div class="ri-s">REQUIRES YOUR SIGN-OFF</div></div>
+          <div class="ri-btn">VIEW</div>
+        </div>
+        <div class="ri">
+          <div class="ri-ico" style="border-color:rgba(34,160,80,.3)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="#22a050" style="display:block;flex-shrink:0"><path d="M72,104a8,8,0,0,1,8-8h96a8,8,0,0,1,0,16H80A8,8,0,0,1,72,104Zm8,40h96a8,8,0,0,0,0-16H80a8,8,0,0,0,0,16ZM232,56V208a8,8,0,0,1-11.58,7.15L192,200.94l-28.42,14.21a8,8,0,0,1-7.16,0L128,200.94,99.58,215.15a8,8,0,0,1-7.16,0L64,200.94,35.58,215.15A8,8,0,0,1,24,208V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Zm-16,0H40V195.06l20.42-10.22a8,8,0,0,1,7.16,0L96,199.06l28.42-14.22a8,8,0,0,1,7.16,0L160,199.06l28.42-14.22a8,8,0,0,1,7.16,0L216,195.06Z"/></svg></div>
+          <div class="ri-body"><div class="ri-t">5 EXPENSE REPORTS</div><div class="ri-s">$2,340 TOTAL · LAST 7 DAYS</div></div>
+          <div class="ri-btn">VIEW ALL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+</div><!-- /.page-content -->
+<script>
+// Number ticker
+function tickNumber(el) {
+  const target = parseInt(el.dataset.tick);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const useComma = el.hasAttribute('data-comma');
+  const duration = 600;
+  const start = performance.now();
+  function fmt(n) {
+    let s = Math.round(n).toString();
+    if (useComma) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return prefix + s + suffix;
+  }
+  el.textContent = fmt(0);
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(ease * target);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+setTimeout(() => {
+  document.querySelectorAll('[data-tick]').forEach((el, i) => {
+    setTimeout(() => tickNumber(el), i * 120);
+  });
+}, 400);
+
+// Page transitions
+document.querySelectorAll('a.nl[href], a.nav-link[href]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (!href || href === '#' || this.classList.contains('on')) return;
+    e.preventDefault();
+    const pc = document.querySelector('.page-content');
+    if (pc) pc.classList.add('fade-out');
+    setTimeout(() => { window.location.href = href; }, 200);
+  });
+});
+</script>
+</body>
+</html>

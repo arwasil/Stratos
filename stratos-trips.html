@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>STRATOS // MY TRIPS</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--surf:#0e0e0e;--panel:#111111;--raise:#161616;
+    --bd:rgba(255,255,255,0.10);--bds:rgba(255,255,255,0.16);
+    --t1:#e0e0e0;--t2:#888888;--t3:#555555;
+    --red:#cc2200;--redb:#ff3300;--redbg:rgba(204,34,0,0.08);--redbd:rgba(204,34,0,0.28);
+    --ok:#22a050;--okbg:rgba(34,160,80,0.10);
+    --warn:#c89020;--warnbg:rgba(200,144,32,0.10);
+    --fn:'Space Mono','Courier New',monospace;
+    --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{color-scheme:dark}
+  html,body{background:#080808}
+  body{font-family:var(--fn);font-size:12px;color:#e0e0e0;-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:0.02em;min-height:100vh;display:flex;flex-direction:column}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 1px,rgba(0,0,0,0.025) 1px,rgba(0,0,0,0.025) 2px);pointer-events:none;z-index:9999}
+  @keyframes pageFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .page-content{animation:pageFadeIn 350ms ease-out;flex:1}
+  .page-content.fade-out{opacity:0;transform:translateY(-6px);transition:opacity 200ms ease-in,transform 200ms ease-in}
+
+  /* === CORNER MARK SYSTEM === */
+  .cm{position:relative;border:1px solid rgba(255,255,255,0.10)!important}
+  .cm::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:2;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+
+  /* TOPBAR */
+  .topbar{height:40px;background:#0e0e0e;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 var(--s4);gap:var(--s4);position:sticky;top:0;z-index:50;flex-shrink:0}
+  .logo{display:flex;align-items:center;gap:var(--s2);font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.1em;text-transform:uppercase;margin-right:var(--s4)}
+  .lm{width:18px;height:18px;border:1px solid #cc2200;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#cc2200;flex-shrink:0}
+  .nav{display:flex;align-items:center;gap:2px}
+  .nl{display:flex;align-items:center;gap:var(--s2);padding:4px 10px;font-size:11px;color:#888;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;border:1px solid transparent;text-decoration:none}
+  .nl:hover{color:#e0e0e0;border-color:var(--bd)}
+  .nl.on{color:#cc2200;border-color:var(--redbd);background:var(--redbg)}
+  .nl svg{fill:#888} .nl.on svg{fill:#cc2200}
+  .tr{margin-left:auto;display:flex;align-items:center;gap:var(--s3)}
+  .sys{font-size:10px;color:#555;letter-spacing:0.06em;display:flex;align-items:center;gap:var(--s2)}
+  .dot{width:5px;height:5px;border-radius:50%;background:#22a050;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  .ava{width:24px;height:24px;border:1px solid #cc2200;font-size:9px;font-weight:700;color:#cc2200;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+  /* PAGE */
+  .page{max-width:1200px;margin:0 auto;padding:var(--s4);flex:1;width:100%}
+  .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--s4)}
+  .pt{font-size:13px;font-weight:700;color:#e0e0e0;letter-spacing:0.04em;text-transform:uppercase}
+  .psub{font-size:10px;color:#888;margin-top:3px;letter-spacing:0.04em}
+  .ph-r{display:flex;align-items:center;gap:var(--s2)}
+  .tbtn{background:#111;border:1px solid var(--bds);padding:3px 10px;font-size:10px;font-weight:700;color:#888;font-family:var(--fn);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;display:flex;align-items:center;gap:var(--s2)}
+  .tbtn:hover{color:#e0e0e0}
+  .tbtn-red{background:#cc2200;color:#fff;border-color:#cc2200} .tbtn-red:hover{background:#ff3300}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:var(--s4)}
+  .stat{background:#111;padding:var(--s3) var(--s4);position:relative;border:1px solid rgba(255,255,255,0.10)}
+  .stat::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:1;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+  .stat-label{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--s2)}
+  .stat-val{font-size:22px;font-weight:700;color:#e0e0e0;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums}
+
+  /* FILTER BAR */
+  .fbar{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s4)}
+  .pills{display:flex;gap:1px}
+  .pill{padding:3px 10px;font-size:10px;font-weight:700;color:#555;cursor:pointer;background:#0e0e0e;border:1px solid rgba(255,255,255,0.10);letter-spacing:0.06em;text-transform:uppercase}
+  .pill.on{background:var(--redbg);border-color:var(--redbd);color:#cc2200}
+  .pill:hover:not(.on){color:#e0e0e0}
+  .fbar-r{margin-left:auto;display:flex;align-items:center;gap:var(--s2)}
+  .sl{font-size:10px;color:#555;letter-spacing:0.06em;text-transform:uppercase}
+  .sb{background:#111;border:1px solid var(--bds);padding:3px 10px;font-size:10px;font-weight:700;color:#e0e0e0;font-family:var(--fn);cursor:pointer;letter-spacing:0.04em;text-transform:uppercase}
+
+  /* TABLE */
+  .panel{background:#111;border:1px solid rgba(255,255,255,0.10);overflow:hidden;position:relative}
+  .panel::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:1;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+  .tbl{width:100%;border-collapse:collapse}
+  .tbl thead th{padding:6px var(--s3);text-align:left;font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--bd);background:#0e0e0e;white-space:nowrap}
+  .tbl tbody tr{border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer}
+  .tbl tbody tr:last-child{border-bottom:none}
+  .tbl tbody tr:hover{background:#161616}
+  .tbl td{padding:8px var(--s3);font-size:11px;color:#e0e0e0;vertical-align:middle}
+  .t2c{color:#888} .t3c{color:#555}
+  .tmono{font-variant-numeric:tabular-nums}
+
+  /* Traveler cell */
+  .trav{display:flex;align-items:center;gap:var(--s2)}
+  .tav{width:22px;height:22px;border:1px solid rgba(255,255,255,0.13);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#e0e0e0;flex-shrink:0}
+  .tn{font-size:11px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase}
+  .td2{font-size:10px;color:#555;margin-top:1px}
+  .ra{font-size:11px;font-weight:700;letter-spacing:0.02em}
+  .rb{font-size:10px;color:#555;margin-top:1px}
+
+  /* Transit left border */
+  .tr-transit{border-left:2px solid #c89020}
+
+  /* Badges */
+  .badge{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;font-size:10px;font-weight:700;white-space:nowrap;border:1px solid;letter-spacing:0.04em;text-transform:uppercase}
+  .b-ok{background:rgba(34,160,80,0.10);color:#22a050;border-color:rgba(34,160,80,0.3)}
+  .b-warn{background:rgba(200,144,32,0.10);color:#c89020;border-color:rgba(200,144,32,0.3)}
+  .b-red{background:rgba(204,34,0,0.08);color:#cc2200;border-color:rgba(204,34,0,0.28)}
+  .b-dim{background:rgba(255,255,255,0.04);color:#555;border-color:rgba(255,255,255,0.10)}
+  .done-row{color:#888}
+  .done-row .tn,.done-row .ra{color:#888}
+  .cancel-row{color:#555}
+  .cancel-row .tn,.cancel-row .ra{color:#555;text-decoration:line-through}
+  .cancel-row .cost{text-decoration:line-through}
+
+  /* MOBILE CARD */
+  .m-cards{display:none}
+  .mc{background:#111;border:1px solid rgba(255,255,255,0.10);padding:var(--s3);margin-bottom:3px;position:relative}
+  .mc::before{
+    content:'';position:absolute;inset:-1px;pointer-events:none;z-index:1;
+    background:
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 0 0/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/8px 1.5px no-repeat,
+      linear-gradient(to bottom,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 0/1.5px 8px no-repeat,
+      linear-gradient(to right,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 0 100%/1.5px 8px no-repeat,
+      linear-gradient(to left,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/8px 1.5px no-repeat,
+      linear-gradient(to top,rgba(255,255,255,0.45) 8px,transparent 8px) 100% 100%/1.5px 8px no-repeat;
+  }
+  .mc-transit{border-left:2px solid #c89020}
+  .mc-top{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s2)}
+  .mc-name{flex:1;font-size:11px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase}
+  .mc-bot{display:flex;align-items:center;justify-content:space-between}
+  .mc-route{font-size:12px;font-weight:700;letter-spacing:0.02em}
+  .mc-meta{font-size:9px;color:#555;margin-top:2px}
+  .mc-cost{font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(4,1fr)}
+    .stat-val{font-size:18px}
+    .col-airline,.col-return,.col-class{display:none}
+  }
+  @media(max-width:600px){
+    .topbar .nav{display:none}
+    .page{padding:var(--s3)}
+    .stats{grid-template-columns:repeat(4,1fr)}
+    .stat{padding:var(--s2) var(--s3)}
+    .stat-label{font-size:8px}
+    .stat-val{font-size:16px}
+    .ph{flex-direction:column;gap:var(--s3)}
+    .panel{display:none}
+    .m-cards{display:block}
+    .fbar{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><div class="lm">S</div>STRATOS</div>
+  <nav class="nav">
+    <a class="nl" href="stratos-dashboard.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>DASHBOARD</a>
+    <a class="nl" href="stratos-serp-flights.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M235.58,128.84,160,91.06V48a32,32,0,0,0-64,0V91.06L20.42,128.84A8,8,0,0,0,16,136v32a8,8,0,0,0,9.57,7.84L96,161.76v18.93L82.34,194.34A8,8,0,0,0,80,200v32a8,8,0,0,0,11,7.43l37-14.81,37,14.81A8,8,0,0,0,176,232V200a8,8,0,0,0-2.34-5.66L160,180.69V161.76l70.43,14.08A8,8,0,0,0,240,168V136A8,8,0,0,0,235.58,128.84ZM224,158.24l-70.43-14.08A8,8,0,0,0,144,152v32a8,8,0,0,0,2.34,5.66L160,203.31v16.87l-29-11.61a8,8,0,0,0-5.94,0L96,220.18V203.31l13.66-13.65A8,8,0,0,0,112,184V152a8,8,0,0,0-9.57-7.84L32,158.24v-17.3l75.58-37.78A8,8,0,0,0,112,96V48a16,16,0,0,1,32,0V96a8,8,0,0,0,4.42,7.16L224,140.94Z"/></svg>FLIGHTS</a>
+    <a class="nl on" href="stratos-trips.html"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H216Z"/></svg>TRIPS</a>
+    <a class="nl" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></svg>EXPENSES</a>
+    <a class="nl" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>REPORTS</a>
+  </nav>
+  <div class="tr">
+    <div class="sys"><div class="dot"></div>SYS.ONLINE</div>
+    <div class="ava">AW</div>
+  </div>
+</div>
+
+<div class="page-content">
+<div class="page">
+  <div class="ph">
+    <div><div class="pt">// MY TRIPS</div><div class="psub">COMPANY FLIGHT BOOKINGS · ALL EMPLOYEES</div></div>
+    <div class="ph-r">
+      <div class="tbtn">EXPORT CSV</div>
+      <div class="tbtn tbtn-red">+ NEW BOOKING</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">TOTAL BOOKINGS</div>
+      <div class="stat-val" data-tick="47">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">UPCOMING</div>
+      <div class="stat-val" style="color:#cc2200" data-tick="12">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">IN TRANSIT</div>
+      <div class="stat-val" style="color:#c89020" data-tick="3">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">COMPLETED</div>
+      <div class="stat-val" style="color:#22a050" data-tick="32">0</div>
+    </div>
+  </div>
+
+  <div class="fbar">
+    <div class="pills">
+      <div class="pill on">ALL</div>
+      <div class="pill">UPCOMING</div>
+      <div class="pill">IN TRANSIT</div>
+      <div class="pill">COMPLETED</div>
+      <div class="pill">CANCELLED</div>
+    </div>
+    <div class="fbar-r">
+      <span class="sl">SORT //</span>
+      <div class="sb">DATE ▾</div>
+    </div>
+  </div>
+
+  <!-- DESKTOP TABLE -->
+  <div class="panel">
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>EMPLOYEE</th>
+            <th>ROUTE</th>
+            <th class="col-airline">AIRLINE / FLIGHT</th>
+            <th>DEPART</th>
+            <th class="col-return">RETURN</th>
+            <th class="col-class">CLASS</th>
+            <th>COST</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tr-transit">
+            <td><div class="trav"><div class="tav" style="background:#1a1030">VR</div><div><div class="tn">VINAY RAO</div><div class="td2">ENGINEERING</div></div></div></td>
+            <td><div class="ra">SIN → SFO</div><div class="rb">DIRECT · 17H 30M</div></td>
+            <td class="col-airline"><div class="ra">SQ37</div><div class="rb">SINGAPORE AIRLINES</div></td>
+            <td class="tmono">APR 8</td>
+            <td class="col-return t2c">APR 14</td>
+            <td class="col-class t2c">ECO</td>
+            <td><span style="font-weight:700">$3,240</span></td>
+            <td><span class="badge b-warn">✈ IN TRANSIT</span></td>
+          </tr>
+          <tr class="tr-transit">
+            <td><div class="trav"><div class="tav" style="background:#081808">AK</div><div><div class="tn">ARJUN KUMAR</div><div class="td2">PRODUCT</div></div></div></td>
+            <td><div class="ra">BLR → SIN</div><div class="rb">1 STOP · 8H 15M</div></td>
+            <td class="col-airline"><div class="ra">6E 204</div><div class="rb">INDIGO + SCOOT</div></td>
+            <td class="tmono">APR 5</td>
+            <td class="col-return t2c">APR 7</td>
+            <td class="col-class t2c">ECO</td>
+            <td><span style="font-weight:700">$1,120</span></td>
+            <td><span class="badge b-warn">✈ IN TRANSIT</span></td>
+          </tr>
+          <tr>
+            <td><div class="trav"><div class="tav" style="background:#201008">PL</div><div><div class="tn">PRIYA LIM</div><div class="td2">SALES</div></div></div></td>
+            <td><div class="ra">KUL → DXB</div><div class="rb">DIRECT · 7H 10M</div></td>
+            <td class="col-airline"><div class="ra">AK58</div><div class="rb">AIRASIA X</div></td>
+            <td class="tmono">APR 10</td>
+            <td class="col-return t2c">APR 13</td>
+            <td class="col-class t2c">ECO</td>
+            <td><span style="font-weight:700">$890</span></td>
+            <td><span class="badge b-red">UPCOMING</span></td>
+          </tr>
+          <tr>
+            <td><div class="trav"><div class="tav" style="background:#200808">SM</div><div><div class="tn">SARAH MEHTA</div><div class="td2">FINANCE</div></div></div></td>
+            <td><div class="ra">SIN → HKG → NRT</div><div class="rb">1 STOP · 12H 40M</div></td>
+            <td class="col-airline"><div class="ra">CX715</div><div class="rb">CATHAY PACIFIC</div></td>
+            <td class="tmono">APR 15</td>
+            <td class="col-return t2c">APR 22</td>
+            <td class="col-class" style="color:#c89020;font-weight:700">BIZ</td>
+            <td><span style="font-weight:700;color:#cc2200">$5,840</span></td>
+            <td><span class="badge b-red">UPCOMING</span> <span class="badge b-warn" style="margin-top:3px">⚠ POLICY</span></td>
+          </tr>
+          <tr>
+            <td><div class="trav"><div class="tav" style="background:#081020">JT</div><div><div class="tn">JOEL TAN</div><div class="td2">DESIGN</div></div></div></td>
+            <td><div class="ra">SIN → CGK</div><div class="rb">DIRECT · 1H 50M</div></td>
+            <td class="col-airline"><div class="ra">GA845</div><div class="rb">GARUDA INDONESIA</div></td>
+            <td class="tmono">APR 18</td>
+            <td class="col-return t2c">APR 20</td>
+            <td class="col-class t2c">ECO</td>
+            <td><span style="font-weight:700">$340</span></td>
+            <td><span class="badge b-red">UPCOMING</span></td>
+          </tr>
+          <tr class="done-row">
+            <td><div class="trav"><div class="tav" style="background:#101018">DW</div><div><div class="tn">DANIEL WONG</div><div class="td2">ENGINEERING</div></div></div></td>
+            <td><div class="ra">SIN → NRT</div><div class="rb">DIRECT · 6H 45M</div></td>
+            <td class="col-airline"><div class="ra">SQ12</div><div class="rb">SINGAPORE AIRLINES</div></td>
+            <td class="tmono t2c">MAR 28</td>
+            <td class="col-return t3c">APR 2</td>
+            <td class="col-class t3c">ECO</td>
+            <td class="t2c"><span style="font-weight:700">$1,860</span></td>
+            <td><span class="badge b-ok">✓ COMPLETED</span></td>
+          </tr>
+          <tr class="done-row">
+            <td><div class="trav"><div class="tav" style="background:#180818">NB</div><div><div class="tn">NADIA BEGUM</div><div class="td2">HR</div></div></div></td>
+            <td><div class="ra">SIN → BKK</div><div class="rb">DIRECT · 2H 25M</div></td>
+            <td class="col-airline"><div class="ra">TR610</div><div class="rb">SCOOT</div></td>
+            <td class="tmono t2c">MAR 24</td>
+            <td class="col-return t3c">MAR 27</td>
+            <td class="col-class t3c">ECO</td>
+            <td class="t2c"><span style="font-weight:700">$420</span></td>
+            <td><span class="badge b-ok">✓ COMPLETED</span></td>
+          </tr>
+          <tr class="cancel-row">
+            <td><div class="trav"><div class="tav" style="background:#0e0e0e;color:#555">RK</div><div><div class="tn">RAHUL KAPOOR</div><div class="td2">SALES</div></div></div></td>
+            <td><div class="ra">SIN → BLR</div><div class="rb">DIRECT · 5H 30M</div></td>
+            <td class="col-airline"><div class="ra">SQ528</div><div class="rb">SINGAPORE AIRLINES</div></td>
+            <td class="tmono t3c">MAR 20</td>
+            <td class="col-return t3c">MAR 25</td>
+            <td class="col-class t3c">ECO</td>
+            <td class="t3c cost"><span style="font-weight:700">$2,180</span></td>
+            <td><span class="badge b-dim">CANCELLED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MOBILE CARDS -->
+  <div class="m-cards">
+    <div class="mc mc-transit">
+      <div class="mc-top"><div class="tav" style="background:#1a1030">VR</div><div class="mc-name">VINAY RAO</div><span class="badge b-warn">✈ IN TRANSIT</span></div>
+      <div class="mc-bot"><div><div class="mc-route">SIN → SFO</div><div class="mc-meta">SQ37 · SINGAPORE AIR · APR 8–14</div></div><div class="mc-cost">$3,240</div></div>
+    </div>
+    <div class="mc mc-transit">
+      <div class="mc-top"><div class="tav" style="background:#081808">AK</div><div class="mc-name">ARJUN KUMAR</div><span class="badge b-warn">✈ IN TRANSIT</span></div>
+      <div class="mc-bot"><div><div class="mc-route">BLR → SIN</div><div class="mc-meta">6E 204 · INDIGO + SCOOT · APR 5–7</div></div><div class="mc-cost">$1,120</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#201008">PL</div><div class="mc-name">PRIYA LIM</div><span class="badge b-red">UPCOMING</span></div>
+      <div class="mc-bot"><div><div class="mc-route">KUL → DXB</div><div class="mc-meta">AK58 · AIRASIA X · APR 10–13</div></div><div class="mc-cost">$890</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#200808">SM</div><div class="mc-name">SARAH MEHTA</div><span class="badge b-red">UPCOMING</span> <span class="badge b-warn">⚠</span></div>
+      <div class="mc-bot"><div><div class="mc-route">SIN → HKG → NRT</div><div class="mc-meta">CX715 · CATHAY · BIZ · APR 15–22</div></div><div class="mc-cost" style="color:#cc2200">$5,840</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#081020">JT</div><div class="mc-name">JOEL TAN</div><span class="badge b-red">UPCOMING</span></div>
+      <div class="mc-bot"><div><div class="mc-route">SIN → CGK</div><div class="mc-meta">GA845 · GARUDA · APR 18–20</div></div><div class="mc-cost">$340</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#101018">DW</div><div class="mc-name" style="color:#888">DANIEL WONG</div><span class="badge b-ok">✓ DONE</span></div>
+      <div class="mc-bot"><div><div class="mc-route" style="color:#888">SIN → NRT</div><div class="mc-meta">SQ12 · SINGAPORE AIR · MAR 28–APR 2</div></div><div class="mc-cost" style="color:#888">$1,860</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#180818">NB</div><div class="mc-name" style="color:#888">NADIA BEGUM</div><span class="badge b-ok">✓ DONE</span></div>
+      <div class="mc-bot"><div><div class="mc-route" style="color:#888">SIN → BKK</div><div class="mc-meta">TR610 · SCOOT · MAR 24–27</div></div><div class="mc-cost" style="color:#888">$420</div></div>
+    </div>
+    <div class="mc">
+      <div class="mc-top"><div class="tav" style="background:#0e0e0e;color:#555">RK</div><div class="mc-name" style="color:#555;text-decoration:line-through">RAHUL KAPOOR</div><span class="badge b-dim">CANCELLED</span></div>
+      <div class="mc-bot"><div><div class="mc-route" style="color:#555">SIN → BLR</div><div class="mc-meta">SQ528 · SINGAPORE AIR · MAR 20–25</div></div><div class="mc-cost" style="color:#555;text-decoration:line-through">$2,180</div></div>
+    </div>
+  </div>
+</div>
+</div><!-- /.page-content -->
+
+<script>
+// Number ticker
+function tickNumber(el) {
+  const target = parseInt(el.dataset.tick);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const useComma = el.hasAttribute('data-comma');
+  const duration = 600;
+  const start = performance.now();
+  function fmt(n) {
+    let s = Math.round(n).toString();
+    if (useComma) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return prefix + s + suffix;
+  }
+  el.textContent = fmt(0);
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(ease * target);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+setTimeout(() => {
+  document.querySelectorAll('[data-tick]').forEach((el, i) => {
+    setTimeout(() => tickNumber(el), i * 120);
+  });
+}, 400);
+
+// Page transitions
+document.querySelectorAll('a.nl[href]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (!href || href === '#' || this.classList.contains('on')) return;
+    e.preventDefault();
+    const pc = document.querySelector('.page-content');
+    if (pc) pc.classList.add('fade-out');
+    setTimeout(() => { window.location.href = href; }, 200);
+  });
+});
+</script>
+</body>
+</html>
