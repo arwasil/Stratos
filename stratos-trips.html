@@ -163,6 +163,33 @@
   .mc-meta{font-size:9px;color:#555;margin-top:2px}
   .mc-cost{font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 
+  /* MOBILE HEADER */
+  .m-header{display:none;height:44px;background:#0e0e0e;border-bottom:1px solid var(--bd);align-items:center;padding:0 var(--s3);position:sticky;top:0;z-index:60;flex-shrink:0}
+  .m-burger{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:1px solid var(--bd);color:#888;flex-shrink:0}
+  .m-burger svg{fill:#888}
+  .m-logo{display:flex;align-items:center;gap:var(--s2);font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.1em;text-transform:uppercase;margin-left:var(--s3)}
+  .m-logo .lm{width:16px;height:16px;font-size:8px}
+  .m-book{margin-left:auto;background:#cc2200;color:#fff;border:none;padding:4px 10px;font-size:9px;font-weight:700;font-family:var(--fn);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer}
+  .m-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:70;opacity:0;transition:opacity 200ms ease}
+  .m-overlay.open{opacity:1}
+  .m-drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:#0e0e0e;border-right:1px solid var(--bd);z-index:80;transform:translateX(-100%);transition:transform 250ms ease;display:none;flex-direction:column;overflow-y:auto}
+  .m-drawer.open{transform:translateX(0)}
+  .m-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:var(--s3) var(--s4);border-bottom:1px solid var(--bd)}
+  .m-drawer-head .logo{margin-right:0}
+  .m-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:1px solid var(--bd);color:#888}
+  .m-close svg{fill:#888}
+  .m-nav{padding:var(--s3) 0;display:flex;flex-direction:column;flex:1}
+  .m-nav-gl{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;padding:var(--s2) var(--s4);margin-top:var(--s3)}
+  .m-nav-gl:first-child{margin-top:0}
+  .m-nav-link{display:flex;align-items:center;gap:var(--s3);padding:10px var(--s4);font-size:12px;color:#888;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;border-left:2px solid transparent}
+  .m-nav-link:hover,.m-nav-link:active{color:#e0e0e0;background:#111}
+  .m-nav-link.on{color:#cc2200;border-left-color:#cc2200;background:var(--redbg)}
+  .m-nav-link svg{fill:#888;flex-shrink:0} .m-nav-link.on svg{fill:#cc2200}
+  .m-nav-user{margin-top:auto;border-top:1px solid var(--bd);padding:var(--s3) var(--s4);display:flex;align-items:center;gap:var(--s2)}
+  .m-nav-user .u-ava{width:24px;height:24px;border:1px solid rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#888}
+  .u-name{font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.04em;text-transform:uppercase}
+  .u-role{font-size:10px;color:#555}
+
   /* RESPONSIVE */
   @media(max-width:900px){
     .stats{grid-template-columns:repeat(4,1fr)}
@@ -170,9 +197,11 @@
     .col-airline,.col-return,.col-class{display:none}
   }
   @media(max-width:600px){
-    .topbar .nav{display:none}
+    .topbar{display:none}
+    .m-header{display:flex}
+    .m-drawer{display:flex}
     .page{padding:var(--s3)}
-    .stats{grid-template-columns:repeat(4,1fr)}
+    .stats{grid-template-columns:repeat(2,1fr)}
     .stat{padding:var(--s2) var(--s3)}
     .stat-label{font-size:8px}
     .stat-val{font-size:16px}
@@ -180,10 +209,41 @@
     .panel{display:none}
     .m-cards{display:block}
     .fbar{flex-wrap:wrap}
+    html,body{overflow-x:hidden}
   }
 </style>
 </head>
 <body>
+
+<!-- MOBILE HEADER -->
+<div class="m-header">
+  <button class="m-burger" onclick="document.querySelector('.m-overlay').classList.add('open');document.querySelector('.m-drawer').classList.add('open');document.body.style.overflow='hidden'" aria-label="Open menu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
+  <div class="m-logo"><div class="lm">S</div>STRATOS</div>
+  <button class="m-book">BOOK</button>
+</div>
+<div class="m-overlay" onclick="closeMobileNav()"></div>
+<nav class="m-drawer">
+  <div class="m-drawer-head">
+    <div class="logo"><div class="lm">S</div>STRATOS</div>
+    <button class="m-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+    </button>
+  </div>
+  <div class="m-nav">
+    <div class="m-nav-gl">// OVERVIEW</div>
+    <a class="m-nav-link" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>DASHBOARD</a>
+    <a class="m-nav-link" href="stratos-serp-flights.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M235.58,128.84,160,91.06V48a32,32,0,0,0-64,0V91.06L20.42,128.84A8,8,0,0,0,16,136v32a8,8,0,0,0,9.57,7.84L96,161.76v18.93L82.34,194.34A8,8,0,0,0,80,200v32a8,8,0,0,0,11,7.43l37-14.81,37,14.81A8,8,0,0,0,176,232V200a8,8,0,0,0-2.34-5.66L160,180.69V161.76l70.43,14.08A8,8,0,0,0,240,168V136A8,8,0,0,0,235.58,128.84Z"/></svg>FLIGHTS</a>
+    <a class="m-nav-link on" href="stratos-trips.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H216Z"/></svg>TRIPS</a>
+    <a class="m-nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Z"/></svg>EXPENSES</a>
+    <a class="m-nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>REPORTS</a>
+    <div class="m-nav-user">
+      <div class="u-ava">AW</div>
+      <div><div class="u-name">ACHMAD WASIL</div><div class="u-role">ADMIN · STRATOS</div></div>
+    </div>
+  </div>
+</nav>
 
 <div class="topbar">
   <div class="logo"><div class="lm">S</div>STRATOS</div>
@@ -384,6 +444,13 @@
 </div><!-- /.page-content -->
 
 <script>
+// Mobile nav
+function closeMobileNav(){
+  document.querySelector('.m-overlay').classList.remove('open');
+  document.querySelector('.m-drawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 // Number ticker
 function tickNumber(el) {
   const target = parseInt(el.dataset.tick);
@@ -413,7 +480,7 @@ setTimeout(() => {
 }, 400);
 
 // Page transitions
-document.querySelectorAll('a.nl[href]').forEach(link => {
+document.querySelectorAll('a.nl[href], a.m-nav-link[href]').forEach(link => {
   link.addEventListener('click', function(e) {
     const href = this.getAttribute('href');
     if (!href || href === '#' || this.classList.contains('on')) return;

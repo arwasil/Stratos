@@ -234,6 +234,7 @@
   .bp-stub-l{border-right:1px dashed rgba(255,255,255,0.10)}
   .bp-stub-r{border-left:1px dashed rgba(255,255,255,0.10)}
   .bp-lbl{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
+  .bp-lbl-dep,.bp-lbl-arr{color:#22a050}
   .bp-time{font-size:22px;font-weight:700;color:#e0e0e0;letter-spacing:-0.03em;line-height:1;margin:var(--s2) 0}
   .bp-code{font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.02em;text-transform:uppercase}
   .bp-city{font-size:10px;color:#888}
@@ -274,14 +275,69 @@
   .ff{border-top:1px solid rgba(255,255,255,0.06);padding:var(--s2) var(--s4);display:flex;align-items:center;gap:var(--s4);background:#0e0e0e}
   .fi{display:flex;align-items:center;gap:3px;font-size:10px;color:#555;letter-spacing:0.02em} .fi svg{fill:#555}
 
+  /* MOBILE SEARCH BAR */
+  .msbar{display:none;background:#0e0e0e;border-bottom:1px solid var(--bd)}
+  .msbar-summary{display:flex;align-items:center;padding:var(--s2) var(--s3);gap:var(--s2);cursor:pointer}
+  .msbar-summary:active{background:#111}
+  .msbar-route{font-size:13px;font-weight:700;color:#e0e0e0;letter-spacing:0.02em}
+  .msbar-meta{font-size:10px;color:#888;letter-spacing:0.02em}
+  .msbar-edit{margin-left:auto;flex-shrink:0;width:28px;height:28px;border:1px solid var(--bd);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .msbar-edit svg{fill:#888}
+  .msbar-form{max-height:0;overflow:hidden;transition:max-height 280ms ease}
+  .msbar.open .msbar-form{max-height:400px}
+  .msbar.open .msbar-edit{border-color:var(--redbd)}
+  .msbar.open .msbar-edit svg{fill:#cc2200}
+  .msf{padding:0 var(--s3)}
+  .msf-row{display:flex;align-items:center;gap:var(--s2);padding:var(--s3) 0;border-top:1px solid rgba(255,255,255,0.06)}
+  .msf-row:first-child{border-top:none}
+  .msf-icon{width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .msf-icon svg{fill:#555}
+  .msf-body{flex:1;min-width:0}
+  .msf-label{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase}
+  .msf-val{font-size:13px;font-weight:700;color:#e0e0e0;letter-spacing:-0.01em;margin-top:1px}
+  .msf-sub{font-size:10px;color:#888;margin-top:1px}
+  .msf-pair{display:flex;gap:1px}
+  .msf-pair .msf-half{flex:1;background:#111;padding:var(--s2) var(--s3);border:1px solid rgba(255,255,255,0.06)}
+  .msf-swap{width:28px;height:28px;flex-shrink:0;border:1px solid var(--bd);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;align-self:center}
+  .msf-swap svg{fill:#888}
+  .msf-go{width:100%;padding:10px;background:#cc2200;color:#fff;border:none;font-size:11px;font-weight:700;font-family:var(--fn);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:var(--s2);margin-bottom:var(--s3)}
+  .msf-go:active{background:#ff3300}
+
+  /* MOBILE HEADER */
+  .m-header{display:none;height:44px;background:#0e0e0e;border-bottom:1px solid var(--bd);align-items:center;padding:0 var(--s3);position:sticky;top:0;z-index:60;flex-shrink:0}
+  .m-burger{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:1px solid var(--bd);color:#888;flex-shrink:0}
+  .m-burger svg{fill:#888}
+  .m-logo{display:flex;align-items:center;gap:var(--s2);font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.1em;text-transform:uppercase;margin-left:var(--s3)}
+  .m-logo .lm{width:16px;height:16px;font-size:8px}
+  .m-book{margin-left:auto;background:#cc2200;color:#fff;border:none;padding:4px 10px;font-size:9px;font-weight:700;font-family:var(--fn);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer}
+  .m-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:70;opacity:0;transition:opacity 200ms ease}
+  .m-overlay.open{opacity:1}
+  .m-drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:#0e0e0e;border-right:1px solid var(--bd);z-index:80;transform:translateX(-100%);transition:transform 250ms ease;display:none;flex-direction:column;overflow-y:auto}
+  .m-drawer.open{transform:translateX(0)}
+  .m-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:var(--s3) var(--s4);border-bottom:1px solid var(--bd)}
+  .m-drawer-head .logo{margin-right:0}
+  .m-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:1px solid var(--bd);color:#888}
+  .m-close svg{fill:#888}
+  .m-nav{padding:var(--s3) 0;display:flex;flex-direction:column;flex:1}
+  .m-nav-gl{font-size:9px;font-weight:700;color:#555;letter-spacing:0.1em;text-transform:uppercase;padding:var(--s2) var(--s4);margin-top:var(--s3)}
+  .m-nav-gl:first-child{margin-top:0}
+  .m-nav-link{display:flex;align-items:center;gap:var(--s3);padding:10px var(--s4);font-size:12px;color:#888;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;border-left:2px solid transparent}
+  .m-nav-link:hover,.m-nav-link:active{color:#e0e0e0;background:#111}
+  .m-nav-link.on{color:#cc2200;border-left-color:#cc2200;background:var(--redbg)}
+  .m-nav-link svg{fill:#888;flex-shrink:0} .m-nav-link.on svg{fill:#cc2200}
+  .m-nav-user{margin-top:auto;border-top:1px solid var(--bd);padding:var(--s3) var(--s4);display:flex;align-items:center;gap:var(--s2)}
+  .m-nav-user .u-ava{width:24px;height:24px;border:1px solid rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#888}
+  .u-name{font-size:11px;font-weight:700;color:#e0e0e0;letter-spacing:0.04em;text-transform:uppercase}
+  .u-role{font-size:10px;color:#555}
+
   /* RESPONSIVE */
   @media(max-width:900px){.flt-side{display:none}.wrap{padding:var(--s3)}}
   @media(max-width:600px){
-    .nav{display:none}
-    .sbar{padding:var(--s2) var(--s3)}
-    .sfields{flex-wrap:nowrap}
-    .sf{padding:var(--s2)} .sfv{font-size:12px} .sfl{font-size:8px} .sfs{display:none}
-    .swp{width:24px} .sbtn{padding:0 var(--s3);font-size:10px} .sbtn svg{display:none}
+    .topbar{display:none}
+    .m-header{display:flex}
+    .m-drawer{display:flex}
+    .sbar{display:none}
+    .msbar{display:block}
     .wrap{padding:var(--s2)}
     .rm{flex-wrap:wrap;gap:var(--s2)}
     .fc-tags{display:none}
@@ -299,10 +355,41 @@
     .bp-info{flex-wrap:wrap;gap:var(--s2)}
     .bp-foot{flex-direction:column;gap:var(--s2);align-items:stretch}
     .bp-foot .bk{width:100%;max-width:none}
+    html,body{overflow-x:hidden}
   }
 </style>
 </head>
 <body>
+
+<!-- MOBILE HEADER -->
+<div class="m-header">
+  <button class="m-burger" onclick="document.querySelector('.m-overlay').classList.add('open');document.querySelector('.m-drawer').classList.add('open');document.body.style.overflow='hidden'" aria-label="Open menu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
+  <div class="m-logo"><div class="lm">S</div>STRATOS</div>
+  <button class="m-book">SEARCH</button>
+</div>
+<div class="m-overlay" onclick="closeMobileNav()"></div>
+<nav class="m-drawer">
+  <div class="m-drawer-head">
+    <div class="logo"><div class="lm">S</div>STRATOS</div>
+    <button class="m-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+    </button>
+  </div>
+  <div class="m-nav">
+    <div class="m-nav-gl">// OVERVIEW</div>
+    <a class="m-nav-link" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>DASHBOARD</a>
+    <a class="m-nav-link on" href="stratos-serp-flights.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M235.58,128.84,160,91.06V48a32,32,0,0,0-64,0V91.06L20.42,128.84A8,8,0,0,0,16,136v32a8,8,0,0,0,9.57,7.84L96,161.76v18.93L82.34,194.34A8,8,0,0,0,80,200v32a8,8,0,0,0,11,7.43l37-14.81,37,14.81A8,8,0,0,0,176,232V200a8,8,0,0,0-2.34-5.66L160,180.69V161.76l70.43,14.08A8,8,0,0,0,240,168V136A8,8,0,0,0,235.58,128.84Z"/></svg>FLIGHTS</a>
+    <a class="m-nav-link" href="stratos-trips.html"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H216Z"/></svg>TRIPS</a>
+    <a class="m-nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Z"/></svg>EXPENSES</a>
+    <a class="m-nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>REPORTS</a>
+    <div class="m-nav-user">
+      <div class="u-ava">AW</div>
+      <div><div class="u-name">ACHMAD WASIL</div><div class="u-role">ADMIN · STRATOS</div></div>
+    </div>
+  </div>
+</nav>
 
 <div class="topbar">
   <div class="logo"><div class="lm">S</div>STRATOS</div>
@@ -350,6 +437,65 @@
       <div class="sfs">ECONOMY</div>
     </div>
     <button class="sbtn"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="display:block;flex-shrink:0"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>SEARCH</button>
+  </div>
+</div>
+
+<!-- MOBILE SEARCH BAR -->
+<div class="msbar" id="msbar">
+  <div class="msbar-summary" onclick="document.getElementById('msbar').classList.toggle('open')">
+    <div>
+      <div class="msbar-route">SIN → SFO</div>
+      <div class="msbar-meta">14–21 APR · 1 ADULT · ECONOMY</div>
+    </div>
+    <button class="msbar-edit" aria-label="Edit search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.69,147.31,64l24-24L216,84.69Z"/></svg>
+    </button>
+  </div>
+  <div class="msbar-form">
+    <div class="msf">
+      <div class="msf-row">
+        <div class="msf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg></div>
+        <div class="msf-body">
+          <div class="msf-label">ORIGIN</div>
+          <div class="msf-val">SINGAPORE</div>
+          <div class="msf-sub">SIN · CHANGI INTL</div>
+        </div>
+        <button class="msf-swap" aria-label="Swap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="currentColor"><path d="M117.66,170.34a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32,0l-32-32a8,8,0,0,1,11.32-11.32L72,188.69V48a8,8,0,0,1,16,0V188.69l18.34-18.35A8,8,0,0,1,117.66,170.34Zm96-96-32-32a8,8,0,0,0-11.32,0l-32,32a8,8,0,0,0,11.32,11.32L168,67.31V208a8,8,0,0,0,16,0V67.31l18.34,18.35a8,8,0,0,0,11.32-11.32Z"/></svg>
+        </button>
+      </div>
+      <div class="msf-row">
+        <div class="msf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg></div>
+        <div class="msf-body">
+          <div class="msf-label">DESTINATION</div>
+          <div class="msf-val">SAN FRANCISCO</div>
+          <div class="msf-sub">SFO · INTL AIRPORT</div>
+        </div>
+      </div>
+      <div class="msf-pair" style="margin-top:var(--s2)">
+        <div class="msf-half">
+          <div class="msf-label">DEPART</div>
+          <div class="msf-val">14 APR</div>
+          <div class="msf-sub">MONDAY 2026</div>
+        </div>
+        <div class="msf-half">
+          <div class="msf-label">RETURN</div>
+          <div class="msf-val">21 APR</div>
+          <div class="msf-sub">MONDAY 2026</div>
+        </div>
+      </div>
+      <div class="msf-pair" style="margin-top:1px">
+        <div class="msf-half">
+          <div class="msf-label">TRAVELERS</div>
+          <div class="msf-val">1 ADULT</div>
+        </div>
+        <div class="msf-half">
+          <div class="msf-label">CLASS</div>
+          <div class="msf-val">ECONOMY</div>
+        </div>
+      </div>
+      <button class="msf-go">SEARCH FLIGHTS</button>
+    </div>
   </div>
 </div>
 
@@ -468,7 +614,7 @@
       <div class="acc-inner">
         <div class="bp">
           <div class="bp-stub bp-stub-l">
-            <div class="bp-lbl">DEPARTURE</div>
+            <div class="bp-lbl bp-lbl-dep">DEPARTURE</div>
             <div class="bp-time">08:45</div>
             <div class="bp-code">SIN</div>
             <div class="bp-city">SINGAPORE CHANGI</div>
@@ -492,7 +638,7 @@
             <div class="bp-ame"><span>23KG BAG</span><span>STD SEAT</span><span>WI-FI</span></div>
           </div>
           <div class="bp-stub bp-stub-r">
-            <div class="bp-lbl">ARRIVAL</div>
+            <div class="bp-lbl bp-lbl-arr">ARRIVAL</div>
             <div class="bp-time">09:15</div>
             <div class="bp-code">SFO</div>
             <div class="bp-city">SAN FRANCISCO INTL</div>
@@ -535,7 +681,7 @@
       <div class="acc-inner">
         <div class="bp">
           <div class="bp-stub bp-stub-l">
-            <div class="bp-lbl">DEPARTURE</div>
+            <div class="bp-lbl bp-lbl-dep">DEPARTURE</div>
             <div class="bp-time">23:55</div>
             <div class="bp-code">SIN</div>
             <div class="bp-city">SINGAPORE CHANGI</div>
@@ -559,7 +705,7 @@
             <div class="bp-ame"><span>25KG BAG</span><span>STD SEAT</span><span>MEAL</span></div>
           </div>
           <div class="bp-stub bp-stub-r">
-            <div class="bp-lbl">ARRIVAL</div>
+            <div class="bp-lbl bp-lbl-arr">ARRIVAL</div>
             <div class="bp-time">00:45<span style="font-size:10px;color:#888;vertical-align:super">+1</span></div>
             <div class="bp-code">SFO</div>
             <div class="bp-city">SAN FRANCISCO INTL</div>
@@ -602,7 +748,7 @@
       <div class="acc-inner">
         <div class="bp">
           <div class="bp-stub bp-stub-l">
-            <div class="bp-lbl">DEPARTURE</div>
+            <div class="bp-lbl bp-lbl-dep">DEPARTURE</div>
             <div class="bp-time">09:30</div>
             <div class="bp-code">SIN</div>
             <div class="bp-city">SINGAPORE CHANGI</div>
@@ -626,7 +772,7 @@
             <div class="bp-ame"><span>23KG BAG</span><span>STD SEAT</span><span>WI-FI</span><span>MEAL</span></div>
           </div>
           <div class="bp-stub bp-stub-r">
-            <div class="bp-lbl">ARRIVAL</div>
+            <div class="bp-lbl bp-lbl-arr">ARRIVAL</div>
             <div class="bp-time">05:35<span style="font-size:10px;color:#888;vertical-align:super">+1</span></div>
             <div class="bp-code">SFO</div>
             <div class="bp-city">SAN FRANCISCO INTL</div>
@@ -669,7 +815,7 @@
       <div class="acc-inner">
         <div class="bp">
           <div class="bp-stub bp-stub-l">
-            <div class="bp-lbl">DEPARTURE</div>
+            <div class="bp-lbl bp-lbl-dep">DEPARTURE</div>
             <div class="bp-time">11:20</div>
             <div class="bp-code">SIN</div>
             <div class="bp-city">SINGAPORE CHANGI</div>
@@ -693,7 +839,7 @@
             <div class="bp-ame"><span>32KG BAG</span><span>EXTRA LEG</span><span>WI-FI</span><span>MEAL</span></div>
           </div>
           <div class="bp-stub bp-stub-r">
-            <div class="bp-lbl">ARRIVAL</div>
+            <div class="bp-lbl bp-lbl-arr">ARRIVAL</div>
             <div class="bp-time">10:00<span style="font-size:10px;color:#888;vertical-align:super">+1</span></div>
             <div class="bp-code">SFO</div>
             <div class="bp-city">SAN FRANCISCO INTL</div>
@@ -736,7 +882,7 @@
       <div class="acc-inner">
         <div class="bp">
           <div class="bp-stub bp-stub-l">
-            <div class="bp-lbl">DEPARTURE</div>
+            <div class="bp-lbl bp-lbl-dep">DEPARTURE</div>
             <div class="bp-time">15:45</div>
             <div class="bp-code">SIN</div>
             <div class="bp-city">SINGAPORE CHANGI</div>
@@ -760,7 +906,7 @@
             <div class="bp-ame"><span>23KG BAG</span><span>STD SEAT</span><span>WI-FI</span><span>MEAL</span></div>
           </div>
           <div class="bp-stub bp-stub-r">
-            <div class="bp-lbl">ARRIVAL</div>
+            <div class="bp-lbl bp-lbl-arr">ARRIVAL</div>
             <div class="bp-time">13:05<span style="font-size:10px;color:#888;vertical-align:super">+1</span></div>
             <div class="bp-code">SFO</div>
             <div class="bp-city">SAN FRANCISCO INTL</div>
@@ -782,6 +928,13 @@
 </div><!-- /.page-content -->
 
 <script>
+// Mobile nav
+function closeMobileNav(){
+  document.querySelector('.m-overlay').classList.remove('open');
+  document.querySelector('.m-drawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 function toggleCard(card) {
   const wasOn = card.classList.contains('on');
   document.querySelectorAll('.fcard').forEach(c => c.classList.remove('on'));
@@ -804,7 +957,7 @@ function toggleCard(card) {
 })();
 
 // Page transitions
-document.querySelectorAll('a.nl[href], a.nav-link[href]').forEach(link => {
+document.querySelectorAll('a.nl[href], a.nav-link[href], a.m-nav-link[href]').forEach(link => {
   link.addEventListener('click', function(e) {
     const href = this.getAttribute('href');
     if (!href || href === '#' || this.classList.contains('on')) return;
