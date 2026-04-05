@@ -210,7 +210,7 @@
   .tdm{background:transparent;color:#555;border-color:rgba(255,255,255,.10)}
   .pm{font-size:18px;font-weight:700;letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums;color:#e0e0e0}
   .ps{font-size:10px;color:#888;margin-top:2px}
-  .pp{font-size:10px;font-weight:700;margin-top:3px;letter-spacing:0.04em;text-transform:uppercase}
+  .pp{font-size:10px;font-weight:700;margin-top:3px;letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap}
   .ok{color:#22a050} .ov{color:#cc2200}
   .expand-ico{flex-shrink:0;transition:transform 200ms}
   .fcard.on .expand-ico{transform:rotate(180deg)}
@@ -342,9 +342,14 @@
     .rm{flex-wrap:wrap;gap:var(--s2)}
     .fc-tags{display:none}
     .ff{display:none}
-    .fm{padding:var(--s2) var(--s3);gap:var(--s2)}
-    .fc-route{padding:0 var(--s1)} .fc-dep,.fc-arr{width:auto;min-width:40px} .et{font-size:15px} .ea{font-size:9px}
-    .ro{min-width:50px} .rd,.rs{font-size:9px}
+    .fcard{overflow:hidden}
+    .fm{padding:var(--s2) var(--s3);gap:0;overflow:hidden}
+    .fc-logo{display:none}
+    .fc-dep{width:44px;flex-shrink:0;text-align:center} .fc-arr{width:50px;flex-shrink:0;text-align:center} .et{font-size:14px} .ea{font-size:8px}
+    .fc-route{flex:1;min-width:30px;padding:0 4px} .rd{display:none}
+    .fc-price{width:80px;flex-shrink:0;text-align:right;padding-right:0;margin-left:12px} .pm{font-size:14px} .ps{font-size:9px} .pp{font-size:8px;white-space:nowrap;letter-spacing:-0.02em}
+    .fc-expand{width:16px;flex-shrink:0}
+    .ro{min-width:30px} .rs{font-size:8px}
     .bp{flex-direction:column}
     .bp-stub{flex:none!important;display:flex;gap:var(--s2);align-items:baseline;padding:var(--s2) var(--s3)}
     .bp-stub-l{border-right:none;border-bottom:1px dashed rgba(255,255,255,0.10)}
