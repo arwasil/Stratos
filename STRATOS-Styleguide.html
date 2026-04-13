@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRATOS // DESIGN SYSTEM STYLEGUIDE</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   STRATOS DESIGN TOKENS (from :root{})
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --bg:    #080808;
+  --surf:  #0e0e0e;
+  --panel: #111111;
+  --raise: #161616;
+
+  --t1: #e0e0e0;
+  --t2: #888888;
+  --t3: #555555;
+
+  --bd:  rgba(255,255,255,0.10);
+  --bds: rgba(255,255,255,0.16);
+
+  --red:   #cc2200;
+  --redb:  #ff3300;
+  --redbg: rgba(204,34,0,0.08);
+  --redbd: rgba(204,34,0,0.28);
+
+  --ok:     #22a050;
+  --okbg:   rgba(34,160,80,0.10);
+  --warn:   #c89020;
+  --warnbg: rgba(200,144,32,0.10);
+
+  --fn: 'Space Mono', 'Courier New', monospace;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STYLEGUIDE LAYOUT
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--fn);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 1px, rgba(0,0,0,0.025) 1px, rgba(0,0,0,0.025) 2px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.guide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--s6);
+}
+
+/* ─── NAV ─── */
+.guide-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--surf);
+  border-bottom: 1px solid var(--bd);
+  padding: var(--s2) var(--s4);
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  margin: calc(var(--s6) * -1);
+  margin-bottom: var(--s6);
+}
+.guide-nav .logo { color: var(--red); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.guide-nav a {
+  color: var(--t3);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  transition: all 80ms;
+}
+.guide-nav a:hover { color: var(--t1); border-color: var(--bd); }
+
+/* ─── SECTIONS ─── */
+.section { margin-bottom: 48px; }
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--t1);
+  margin-bottom: var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.section-title .prefix { color: var(--red); }
+.sub-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--t2);
+  margin: var(--s5) 0 var(--s3);
+}
+
+.desc {
+  color: var(--t3);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  margin-bottom: var(--s4);
+  text-transform: none;
+  font-family: var(--fn);
+}
+
+/* ─── TOKEN TABLES ─── */
+.token-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--s4);
+}
+.token-table th {
+  font-size: 9px;
+  color: var(--t3);
+  letter-spacing: 0.1em;
+  text-align: left;
+  background: var(--surf);
+  padding: 6px var(--s3);
+  border-bottom: 1px solid var(--bd);
+}
+.token-table td {
+  font-size: 11px;
+  padding: 8px var(--s3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: middle;
+}
+.token-table tr:hover { background: var(--raise); }
+.token-table .token { color: var(--red); font-weight: 700; }
+.token-table .value { color: var(--t2); }
+.token-table .usage { color: var(--t1); font-size: 10px; }
+
+/* ─── COLOR SWATCHES ─── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 3px;
+  margin-bottom: var(--s4);
+}
+.color-card {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  position: relative;
+  overflow: hidden;
+}
+.color-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 0 / 9.5px 1.5px,
+    linear-gradient(135deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 0 / 1.5px 9.5px,
+    linear-gradient(225deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 0 / 9.5px 1.5px,
+    linear-gradient(225deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 0 / 1.5px 9.5px,
+    linear-gradient(315deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 100% / 9.5px 1.5px,
+    linear-gradient(315deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 100% / 1.5px 9.5px,
+    linear-gradient(45deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 100% / 9.5px 1.5px,
+    linear-gradient(45deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 100% / 1.5px 9.5px;
+  pointer-events: none;
+}
+.color-swatch { height: 48px; }
+.color-info { padding: var(--s2) var(--s3); }
+.color-info .name { font-weight: 700; font-size: 10px; color: var(--t1); letter-spacing: 0.06em; }
+.color-info .hex { color: var(--t2); font-size: 10px; margin-top: 2px; }
+.color-info .use { color: var(--t3); font-size: 9px; margin-top: 2px; }
+
+/* ─── SPACING VIS ─── */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: 3px;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: var(--s2) var(--s3);
+}
+.spacing-bar {
+  background: var(--red);
+  height: 12px;
+  flex-shrink: 0;
+}
+.spacing-label { font-size: 10px; color: var(--t2); min-width: 40px; }
+.spacing-val { font-size: 10px; color: var(--t1); font-weight: 700; min-width: 30px; }
+.spacing-use { font-size: 9px; color: var(--t3); }
+
+/* ─── ELEVATION VIS ─── */
+.elev-stack {
+  display: flex;
+  gap: 3px;
+  margin-bottom: var(--s4);
+}
+.elev-layer {
+  flex: 1;
+  padding: var(--s4);
+  border: 1px solid var(--bd);
+  text-align: center;
+  position: relative;
+}
+.elev-layer .layer-num { font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -0.03em; }
+.elev-layer .layer-name { font-size: 9px; color: var(--t3); margin-top: 4px; letter-spacing: 0.1em; }
+.elev-layer .layer-hex { font-size: 10px; color: var(--t2); margin-top: 2px; }
+
+/* ─── TYPE SCALE VIS ─── */
+.type-sample {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s4);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.type-label { min-width: 120px; font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.type-spec { min-width: 200px; font-size: 9px; color: var(--t2); text-align: right; text-transform: none; }
+
+/* ─── CORNER MARK MIXIN ─── */
+.cm { position: relative; }
+.cm::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 0 0 / 12px 2px,
+    linear-gradient(135deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 0 0 / 2px 12px,
+    linear-gradient(225deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 100% 0 / 12px 2px,
+    linear-gradient(225deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 100% 0 / 2px 12px,
+    linear-gradient(315deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 100% 100% / 12px 2px,
+    linear-gradient(315deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 100% 100% / 2px 12px,
+    linear-gradient(45deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 0 100% / 12px 2px,
+    linear-gradient(45deg, rgba(255,255,255,0.60) 0, rgba(255,255,255,0.60) 10px, transparent 10px) no-repeat 0 100% / 2px 12px;
+}
+.cm:hover::before {
+  background:
+    linear-gradient(135deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 0 0 / 12px 2px,
+    linear-gradient(135deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 0 0 / 2px 12px,
+    linear-gradient(225deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 100% 0 / 12px 2px,
+    linear-gradient(225deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 100% 0 / 2px 12px,
+    linear-gradient(315deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 100% 100% / 12px 2px,
+    linear-gradient(315deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 100% 100% / 2px 12px,
+    linear-gradient(45deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 0 100% / 12px 2px,
+    linear-gradient(45deg, rgba(204,34,0,0.85) 0, rgba(204,34,0,0.85) 10px, transparent 10px) no-repeat 0 100% / 2px 12px;
+}
+.cm-red::before {
+  background:
+    linear-gradient(135deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 0 0 / 12px 2px,
+    linear-gradient(135deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 0 0 / 2px 12px,
+    linear-gradient(225deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 100% 0 / 12px 2px,
+    linear-gradient(225deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 100% 0 / 2px 12px,
+    linear-gradient(315deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 100% 100% / 12px 2px,
+    linear-gradient(315deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 100% 100% / 2px 12px,
+    linear-gradient(45deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 0 100% / 12px 2px,
+    linear-gradient(45deg, #cc2200 0, #cc2200 10px, transparent 10px) no-repeat 0 100% / 2px 12px;
+}
+
+/* ─── COMPONENT SHOWCASE ─── */
+.comp-showcase {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  padding: var(--s5);
+  margin-bottom: 3px;
+}
+.comp-spec {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: var(--s3) var(--s4);
+  margin-bottom: 3px;
+}
+.comp-spec-row {
+  display: flex;
+  gap: var(--s3);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 10px;
+}
+.comp-spec-row:last-child { border: none; }
+.comp-spec-row .k { color: var(--t3); min-width: 140px; font-weight: 700; letter-spacing: 0.08em; }
+.comp-spec-row .v { color: var(--t1); text-transform: none; }
+.comp-states { margin-top: 3px; }
+
+/* ─── LIVE COMPONENT STYLES ─── */
+
+/* Topbar */
+.demo-topbar {
+  height: 40px;
+  background: var(--surf);
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s4);
+  gap: var(--s4);
+}
+.demo-topbar .lm {
+  width: 18px; height: 18px;
+  border: 1px solid var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--red); font-size: 11px; font-weight: 700;
+}
+.demo-topbar .brand { color: var(--t1); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+.nl {
+  font-size: 11px; letter-spacing: 0.06em; color: var(--t2);
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 80ms;
+  text-decoration: none;
+}
+.nl:hover { color: var(--t1); border-color: var(--bd); }
+.nl.on { color: var(--red); border-color: var(--redbd); background: var(--redbg); }
+.demo-topbar .tr { margin-left: auto; display: flex; align-items: center; gap: var(--s2); }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.sys-label { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.avatar { width: 22px; height: 22px; background: var(--raise); border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--t2); font-weight: 700; }
+
+/* Panel */
+.demo-panel {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  position: relative;
+}
+.demo-panel .ph2 {
+  background: var(--surf);
+  border-bottom: 1px solid var(--bd);
+  padding: var(--s2) var(--s4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.demo-panel .ph2 .title { font-size: 10px; font-weight: 700; color: var(--t2); letter-spacing: 0.08em; }
+.demo-panel .body { padding: var(--s3) var(--s4); }
+
+/* Stat cards */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: var(--s3) var(--s4);
+  position: relative;
+}
+.stat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 0 / 9.5px 1.5px,
+    linear-gradient(135deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 0 / 1.5px 9.5px,
+    linear-gradient(225deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 0 / 9.5px 1.5px,
+    linear-gradient(225deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 0 / 1.5px 9.5px,
+    linear-gradient(315deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 100% / 9.5px 1.5px,
+    linear-gradient(315deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 100% 100% / 1.5px 9.5px,
+    linear-gradient(45deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 100% / 9.5px 1.5px,
+    linear-gradient(45deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 8px, transparent 8px) no-repeat 0 100% / 1.5px 9.5px;
+}
+.stat .label { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.stat .val { font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -0.03em; margin: 4px 0; }
+.stat .delta { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; }
+.stat .delta.up { color: var(--ok); }
+.stat .delta.dn { color: var(--red); }
+.stat .delta.fl { color: var(--t3); }
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+}
+.b-ok { background: var(--okbg); color: var(--ok); border-color: rgba(34,160,80,0.3); }
+.b-warn { background: var(--warnbg); color: var(--warn); border-color: rgba(200,144,32,0.3); }
+.b-red { background: var(--redbg); color: var(--red); border-color: rgba(204,34,0,0.28); }
+.b-dim { background: rgba(255,255,255,0.04); color: var(--t3); border-color: rgba(255,255,255,0.10); }
+
+/* Buttons — Primary CTA (.bk) */
+.bk {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  max-width: 220px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--fn);
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+.bk::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--redb);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.15s ease-in-out;
+}
+.bk:hover::before { transform: scaleX(1); }
+.bk .bl, .bk .br {
+  display: inline-block;
+  transition: transform 0.15s ease-in-out;
+}
+.bk .bl { margin-right: 5px; transform: translateX(5px); }
+.bk .br { margin-left: 5px; transform: translateX(-5px); }
+.bk:hover .bl { transform: translateX(0); }
+.bk:hover .br { transform: translateX(0); }
+.bk-wrap { display: flex; justify-content: flex-end; }
+
+/* Buttons — Legacy Primary (simple) */
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  font-family: var(--fn);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  padding: 9px 24px;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--redb);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.15s ease-in-out;
+}
+.btn-primary:hover::before { transform: scaleX(1); }
+
+/* Buttons — Secondary */
+.btn-secondary {
+  background: var(--panel);
+  color: var(--t2);
+  font-family: var(--fn);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--bds);
+  padding: 7px 20px;
+  cursor: pointer;
+  transition: color 80ms;
+}
+.btn-secondary:hover { color: var(--t1); }
+
+/* Filter pills */
+.pill {
+  display: inline-flex;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--bd);
+  background: var(--surf);
+  color: var(--t3);
+  cursor: pointer;
+  transition: all 80ms;
+}
+.pill.on { background: var(--redbg); border-color: var(--redbd); color: var(--red); }
+.pill:hover { color: var(--t1); }
+
+/* Policy banner */
+.pbn {
+  background: var(--redbg);
+  border: 1px solid rgba(204,34,0,0.28);
+  color: var(--red);
+  padding: var(--s3) var(--s4);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  position: relative;
+}
+
+/* Data table */
+.demo-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.demo-table th {
+  font-size: 9px;
+  color: var(--t3);
+  letter-spacing: 0.1em;
+  text-align: left;
+  background: var(--surf);
+  padding: 6px var(--s3);
+  border-bottom: 1px solid var(--bd);
+  font-weight: 700;
+}
+.demo-table td {
+  font-size: 11px;
+  color: var(--t1);
+  padding: 8px var(--s3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.demo-table tr:hover td { background: var(--raise); }
+.demo-table .muted { color: var(--t2); font-size: 10px; }
+.demo-table .route { font-weight: 700; }
+
+/* Flight card */
+.fcard {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.10);
+  margin-bottom: 3px;
+  padding: var(--s3) var(--s4);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  position: relative;
+  cursor: pointer;
+  transition: background 80ms;
+}
+.fcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: none;
+  transition: background 80ms;
+}
+.fcard:hover::before {
+  background:
+    linear-gradient(135deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 0 0 / 9.5px 1.5px,
+    linear-gradient(135deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 0 0 / 1.5px 9.5px,
+    linear-gradient(225deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 100% 0 / 9.5px 1.5px,
+    linear-gradient(225deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 100% 0 / 1.5px 9.5px,
+    linear-gradient(315deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 100% 100% / 9.5px 1.5px,
+    linear-gradient(315deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 100% 100% / 1.5px 9.5px,
+    linear-gradient(45deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 0 100% / 9.5px 1.5px,
+    linear-gradient(45deg, rgba(204,34,0,0.70) 0, rgba(204,34,0,0.70) 8px, transparent 8px) no-repeat 0 100% / 1.5px 9.5px;
+}
+.fcard.on {
+  border-color: rgba(204,34,0,0.30);
+  background: rgba(204,34,0,0.03);
+}
+.fcard.on::before {
+  background:
+    linear-gradient(135deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 0 0 / 9.5px 1.5px,
+    linear-gradient(135deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 0 0 / 1.5px 9.5px,
+    linear-gradient(225deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 100% 0 / 9.5px 1.5px,
+    linear-gradient(225deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 100% 0 / 1.5px 9.5px,
+    linear-gradient(315deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 100% 100% / 9.5px 1.5px,
+    linear-gradient(315deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 100% 100% / 1.5px 9.5px,
+    linear-gradient(45deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 0 100% / 9.5px 1.5px,
+    linear-gradient(45deg, #cc2200 0, #cc2200 8px, transparent 8px) no-repeat 0 100% / 1.5px 9.5px;
+}
+.fcard .fc-logo { width: 44px; height: 32px; background: var(--surf); border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--t3); flex-shrink: 0; }
+.fcard .fc-time { font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; }
+.fcard .fc-airport { font-size: 10px; font-weight: 700; color: var(--t2); }
+.fcard .fc-dep, .fcard .fc-arr { width: 60px; text-align: center; flex-shrink: 0; }
+.fcard .fc-route {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+}
+.fcard .fc-route .dot-end { width: 5px; height: 5px; border: 1px solid var(--t3); border-radius: 50%; flex-shrink: 0; }
+.fcard .fc-route .track { flex: 1; height: 1px; background: rgba(255,255,255,0.13); }
+.fcard .fc-tags { width: 150px; flex-shrink: 0; text-align: center; }
+.fcard .fc-tags .dur { font-size: 10px; color: var(--t2); }
+.fcard .fc-price { width: 100px; text-align: right; flex-shrink: 0; }
+.fcard .fc-price .pm { font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; }
+.fcard .fc-price .pp { font-size: 10px; font-weight: 700; }
+.fcard .fc-price .pp.ok { color: var(--ok); }
+.fcard .fc-price .pp.ov { color: var(--red); }
+
+/* Sidebar */
+.demo-sidebar {
+  width: 200px;
+  background: var(--surf);
+  border: 1px solid var(--bd);
+  padding: var(--s3) 0;
+}
+.nav-group-label { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; padding: var(--s2) var(--s4); }
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s4);
+  font-size: 11px;
+  color: var(--t2);
+  letter-spacing: 0.06em;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: all 80ms;
+  text-decoration: none;
+}
+.nav-link:hover { color: var(--t1); background: rgba(255,255,255,0.03); }
+.nav-link.active { border-left-color: var(--red); color: var(--t1); }
+.nav-ct {
+  margin-left: auto;
+  background: var(--raise);
+  color: var(--t3);
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+/* Search bar */
+.demo-search {
+  background: var(--surf);
+  border: 1px solid var(--bd);
+  padding: var(--s3) var(--s4);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+.sf {
+  flex: 1;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--bd);
+  background: var(--panel);
+}
+.sf.af { border-color: rgba(204,34,0,0.28); background: rgba(204,34,0,0.06); }
+.sfl { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.sfv { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -0.01em; margin: 2px 0; }
+.sfs { font-size: 9px; color: var(--t2); }
+
+/* Skeleton */
+.skel-bar {
+  background: var(--raise);
+  height: 12px;
+  margin-bottom: 6px;
+  animation: shimmer 1.6s infinite;
+  background-image: linear-gradient(90deg, #161616 0%, #1e1e1e 40%, #161616 80%);
+  background-size: 300% 100%;
+}
+@keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+.skel-bar.w60 { width: 60%; }
+.skel-bar.w80 { width: 80%; }
+.skel-bar.w40 { width: 40%; }
+
+.loading-dots { display: flex; gap: 4px; padding: var(--s2) 0; }
+.loading-dots span { width: 4px; height: 4px; background: var(--t3); border-radius: 50%; animation: pulse 2s infinite; }
+.loading-dots span:nth-child(2) { animation-delay: 0.3s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.6s; }
+
+/* Boarding pass */
+.demo-bp {
+  display: flex;
+  border: 1px solid var(--bd);
+  background: var(--panel);
+}
+.bp-stub {
+  width: 140px;
+  background: var(--surf);
+  padding: var(--s4) var(--s3);
+  text-align: center;
+  flex-shrink: 0;
+}
+.bp-stub-l { border-right: 1px dashed var(--bd); }
+.bp-stub-r { border-left: 1px dashed var(--bd); }
+.bp-stub .bp-lbl { font-size: 9px; color: var(--ok); letter-spacing: 0.1em; }
+.bp-stub .bp-time { font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -0.03em; margin: 4px 0; }
+.bp-stub .bp-code { font-size: 10px; color: var(--t2); font-weight: 700; }
+.bp-center { flex: 1; padding: var(--s4); display: flex; flex-direction: column; gap: var(--s2); }
+.bp-center .bp-flight { font-size: 10px; color: var(--t3); letter-spacing: 0.08em; }
+.bp-center .bp-info { display: flex; gap: var(--s4); }
+.bp-center .bp-info-item .bp-info-lbl { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.bp-center .bp-info-item .bp-info-val { font-size: 11px; color: var(--t1); font-weight: 700; margin-top: 2px; }
+.bp-foot {
+  background: var(--surf);
+  border-top: 1px solid var(--bd);
+  padding: var(--s2) var(--s4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* DO / DON'T */
+.rule { display: flex; gap: var(--s3); padding: var(--s2) 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 10px; }
+.rule .icon { flex-shrink: 0; font-weight: 700; width: 20px; }
+.rule .icon.do { color: var(--ok); }
+.rule .icon.dont { color: var(--red); }
+.rule .text { color: var(--t1); }
+
+/* Code snippet */
+.snippet {
+  background: var(--surf);
+  border: 1px solid var(--bd);
+  padding: var(--s3) var(--s4);
+  margin: var(--s2) 0 var(--s4);
+  font-size: 10px;
+  color: var(--t2);
+  text-transform: none;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.7;
+}
+.snippet .kw { color: var(--red); }
+.snippet .str { color: var(--ok); }
+.snippet .cmt { color: var(--t3); }
+
+/* Mobile search bar */
+.demo-msbar {
+  background: var(--surf);
+  border: 1px solid var(--bd);
+  padding: var(--s3) var(--s4);
+}
+.msbar-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.msbar-route { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -0.01em; }
+.msbar-meta { font-size: 10px; color: var(--t2); }
+.msbar-edit {
+  width: 28px; height: 28px;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--t3); font-size: 11px;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.msf-row {
+  display: flex;
+  gap: var(--s2);
+  padding: var(--s2) 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.msf-icon { width: 20px; flex-shrink: 0; font-size: 11px; color: var(--t3); padding-top: 2px; }
+.msf-body { flex: 1; min-width: 0; }
+.msf-label { font-size: 9px; color: var(--t3); letter-spacing: 0.1em; }
+.msf-val { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -0.01em; margin: 2px 0; }
+.msf-sub { font-size: 10px; color: var(--t2); }
+
+/* Section anchor scroll offset */
+[id] { scroll-margin-top: 52px; }
+</style>
+</head>
+<body>
+
+<div class="guide">
+
+<!-- ═══ NAV ═══ -->
+<nav class="guide-nav">
+  <span class="logo">STRATOS // DS</span>
+  <a href="#colors">COLORS</a>
+  <a href="#typography">TYPE</a>
+  <a href="#spacing">SPACING</a>
+  <a href="#elevation">ELEVATION</a>
+  <a href="#borders">BORDERS</a>
+  <a href="#animations">MOTION</a>
+  <a href="#components">COMPONENTS</a>
+  <a href="#mobile">MOBILE</a>
+  <a href="#rules">DO/DON'T</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="section" style="padding-top:var(--s6);">
+  <div style="margin-bottom:var(--s4);">
+    <div style="font-size:28px;font-weight:700;color:var(--red);letter-spacing:-0.03em;">STRATOS</div>
+    <div style="font-size:13px;font-weight:700;color:var(--t1);letter-spacing:0.04em;margin-top:4px;">DESIGN SYSTEM STYLEGUIDE</div>
+    <div style="font-size:10px;color:var(--t3);letter-spacing:0.04em;margin-top:4px;">COMPONENT SNIPPET LIBRARY &middot; V1.1 &middot; APRIL 2026</div>
+  </div>
+  <p class="desc">Dark-mode corporate travel management interface. Terminal-inspired aesthetic channeling military/aerospace HUD displays. Near-black backgrounds, sharp corner marks on every panel, uppercase typography, and a single red accent (#cc2200) that cuts through the darkness like instrument lighting. Reference: Bloomberg Terminal, SpaceX Mission Control, Sci-Fi FUI.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     1. COLOR TOKENS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="colors">
+  <div class="section-title"><span class="prefix">//</span> COLOR TOKENS</div>
+  <p class="desc">All values from the shared :root{} block. Strict palette — no blues, purples, or additional hues.</p>
+
+  <div class="sub-title">BACKGROUNDS</div>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#080808;"></div>
+      <div class="color-info"><div class="name">--BG</div><div class="hex">#080808</div><div class="use">Page / body background</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#0e0e0e;"></div>
+      <div class="color-info"><div class="name">--SURF</div><div class="hex">#0E0E0E</div><div class="use">Topbar, sidebar, headers</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#111111;"></div>
+      <div class="color-info"><div class="name">--PANEL</div><div class="hex">#111111</div><div class="use">Panel / card fill</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#161616;"></div>
+      <div class="color-info"><div class="name">--RAISE</div><div class="hex">#161616</div><div class="use">Hover, elevated</div></div>
+    </div>
+  </div>
+
+  <div class="sub-title">TEXT HIERARCHY</div>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#e0e0e0;"></div>
+      <div class="color-info"><div class="name">--T1</div><div class="hex">#E0E0E0</div><div class="use">Primary text, values</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#888888;"></div>
+      <div class="color-info"><div class="name">--T2</div><div class="hex">#888888</div><div class="use">Secondary, subtitles</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#555555;"></div>
+      <div class="color-info"><div class="name">--T3</div><div class="hex">#555555</div><div class="use">Labels, muted</div></div>
+    </div>
+  </div>
+
+  <div class="sub-title">ACCENT — RED</div>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#cc2200;"></div>
+      <div class="color-info"><div class="name">--RED</div><div class="hex">#CC2200</div><div class="use">Primary accent, CTAs</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#ff3300;"></div>
+      <div class="color-info"><div class="name">--REDB</div><div class="hex">#FF3300</div><div class="use">Red hover state</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(204,34,0,0.08);border:1px solid rgba(204,34,0,0.28);"></div>
+      <div class="color-info"><div class="name">--REDBG</div><div class="hex">rgba(204,34,0,0.08)</div><div class="use">Red tinted background</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(204,34,0,0.28);"></div>
+      <div class="color-info"><div class="name">--REDBD</div><div class="hex">rgba(204,34,0,0.28)</div><div class="use">Red border accent</div></div>
+    </div>
+  </div>
+
+  <div class="sub-title">BORDERS</div>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(255,255,255,0.10);"></div>
+      <div class="color-info"><div class="name">--BD</div><div class="hex">rgba(255,255,255,0.10)</div><div class="use">Default border</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(255,255,255,0.16);"></div>
+      <div class="color-info"><div class="name">--BDS</div><div class="hex">rgba(255,255,255,0.16)</div><div class="use">Stronger (buttons)</div></div>
+    </div>
+  </div>
+
+  <div class="sub-title">STATUS</div>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#22a050;"></div>
+      <div class="color-info"><div class="name">--OK</div><div class="hex">#22A050</div><div class="use">Success, approved</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(34,160,80,0.10);border:1px solid rgba(34,160,80,0.3);"></div>
+      <div class="color-info"><div class="name">--OKBG</div><div class="hex">rgba(34,160,80,0.10)</div><div class="use">Green tint bg</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#c89020;"></div>
+      <div class="color-info"><div class="name">--WARN</div><div class="hex">#C89020</div><div class="use">Warning, pending</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:rgba(200,144,32,0.10);border:1px solid rgba(200,144,32,0.3);"></div>
+      <div class="color-info"><div class="name">--WARNBG</div><div class="hex">rgba(200,144,32,0.10)</div><div class="use">Amber tint bg</div></div>
+    </div>
+  </div>
+
+  <div class="sub-title">CSS SNIPPET</div>
+  <div class="snippet"><span class="kw">:root</span> {
+  <span class="cmt">/* backgrounds */</span>
+  --bg: <span class="str">#080808</span>;  --surf: <span class="str">#0e0e0e</span>;  --panel: <span class="str">#111111</span>;  --raise: <span class="str">#161616</span>;
+  <span class="cmt">/* text */</span>
+  --t1: <span class="str">#e0e0e0</span>;  --t2: <span class="str">#888888</span>;  --t3: <span class="str">#555555</span>;
+  <span class="cmt">/* borders */</span>
+  --bd: <span class="str">rgba(255,255,255,0.10)</span>;  --bds: <span class="str">rgba(255,255,255,0.16)</span>;
+  <span class="cmt">/* accent */</span>
+  --red: <span class="str">#cc2200</span>;  --redb: <span class="str">#ff3300</span>;
+  --redbg: <span class="str">rgba(204,34,0,0.08)</span>;  --redbd: <span class="str">rgba(204,34,0,0.28)</span>;
+  <span class="cmt">/* status */</span>
+  --ok: <span class="str">#22a050</span>;  --okbg: <span class="str">rgba(34,160,80,0.10)</span>;
+  --warn: <span class="str">#c89020</span>;  --warnbg: <span class="str">rgba(200,144,32,0.10)</span>;
+  <span class="cmt">/* font */</span>
+  --fn: <span class="str">'Space Mono', 'Courier New', monospace</span>;
+  <span class="cmt">/* spacing */</span>
+  --s1:<span class="str">4px</span>; --s2:<span class="str">8px</span>; --s3:<span class="str">12px</span>; --s4:<span class="str">16px</span>; --s5:<span class="str">20px</span>; --s6:<span class="str">24px</span>;
+}</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     2. TYPOGRAPHY
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="typography">
+  <div class="section-title"><span class="prefix">//</span> TYPOGRAPHY</div>
+  <p class="desc">Font: Space Mono (400, 700). Fallback: 'Courier New', monospace. Smoothing: antialiased. Everything uppercase. Negative letter-spacing for large numbers; positive for labels/buttons. tabular-nums on all numeric values.</p>
+
+  <div class="sub-title">TYPE SCALE — LIVE SAMPLES</div>
+
+  <div class="type-sample">
+    <span class="type-label">HERO PRICE</span>
+    <span style="font-size:28px;font-weight:700;letter-spacing:-0.03em;color:var(--t1);">$3,240</span>
+    <span class="type-spec">28px / 700 / -0.03em</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">LARGE TIME</span>
+    <span style="font-size:24px;font-weight:700;letter-spacing:-0.03em;color:var(--t1);">14:30</span>
+    <span class="type-spec">24px / 700 / -0.03em</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">STAT VALUE</span>
+    <span style="font-size:22px;font-weight:700;letter-spacing:-0.03em;color:var(--t1);">1,247</span>
+    <span class="type-spec">22px / 700 / -0.03em</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">FLIGHT TIME</span>
+    <span style="font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--t1);">08:45</span>
+    <span class="type-spec">18px / 700 / -0.02em / tabular-nums</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">ROUTE TIME</span>
+    <span style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:var(--t1);">22:15</span>
+    <span class="type-spec">16px / 700 / -0.02em</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">PAGE TITLE</span>
+    <span style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:var(--t1);">// DASHBOARD</span>
+    <span class="type-spec">13px / 700 / 0.04em / uppercase</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">BODY / CELL</span>
+    <span style="font-size:11px;font-weight:400;letter-spacing:0.02em;color:var(--t1);">SINGAPORE AIRLINES &middot; SQ 322</span>
+    <span class="type-spec">11px / 400 / 0.02em / uppercase</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">NAV LINK</span>
+    <span style="font-size:11px;font-weight:400;letter-spacing:0.06em;color:var(--t2);">FLIGHTS</span>
+    <span class="type-spec">11px / 400 / 0.06em / uppercase</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">BUTTON</span>
+    <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--t1);">[[ SELECT FLIGHT ]]</span>
+    <span class="type-spec">11px / 700 / 0.1em / uppercase</span>
+  </div>
+  <div class="type-sample">
+    <span class="type-label">MICRO LABEL</span>
+    <span style="font-size:9px;font-weight:700;letter-spacing:0.12em;color:var(--t3);">DEPARTURE</span>
+    <span class="type-spec">9px / 700 / 0.1–0.12em / uppercase</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     3. SPACING
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="spacing">
+  <div class="section-title"><span class="prefix">//</span> SPACING</div>
+
+  <div class="spacing-row">
+    <span class="spacing-label">--S1</span>
+    <span class="spacing-val">4PX</span>
+    <div class="spacing-bar" style="width:16px;"></div>
+    <span class="spacing-use">MICRO GAPS (ICON-TO-TEXT)</span>
+  </div>
+  <div class="spacing-row">
+    <span class="spacing-label">--S2</span>
+    <span class="spacing-val">8PX</span>
+    <div class="spacing-bar" style="width:32px;"></div>
+    <span class="spacing-use">SMALL GAPS (INLINE ELEMENTS)</span>
+  </div>
+  <div class="spacing-row">
+    <span class="spacing-label">--S3</span>
+    <span class="spacing-val">12PX</span>
+    <div class="spacing-bar" style="width:48px;"></div>
+    <span class="spacing-use">MEDIUM GAPS (SECTION/CARD PADDING)</span>
+  </div>
+  <div class="spacing-row">
+    <span class="spacing-label">--S4</span>
+    <span class="spacing-val">16PX</span>
+    <div class="spacing-bar" style="width:64px;"></div>
+    <span class="spacing-use">STANDARD GAPS (PAGE/PANEL PADDING)</span>
+  </div>
+  <div class="spacing-row">
+    <span class="spacing-label">--S5</span>
+    <span class="spacing-val">20PX</span>
+    <div class="spacing-bar" style="width:80px;"></div>
+    <span class="spacing-use">LARGE GAPS (DETAIL VIEW COLUMNS)</span>
+  </div>
+  <div class="spacing-row">
+    <span class="spacing-label">--S6</span>
+    <span class="spacing-val">24PX</span>
+    <div class="spacing-bar" style="width:96px;"></div>
+    <span class="spacing-use">EXTRA-LARGE (OUTER PAGE PADDING)</span>
+  </div>
+
+  <div class="sub-title">PATTERNS</div>
+  <table class="token-table">
+    <tr><th>CONTEXT</th><th>VALUE</th></tr>
+    <tr><td class="usage">CARD INNER PADDING</td><td class="value">--S3 VERT, --S4 HORIZ</td></tr>
+    <tr><td class="usage">PAGE CONTENT</td><td class="value">--S4 ALL SIDES</td></tr>
+    <tr><td class="usage">STACKED CARDS GAP</td><td class="value">3PX (NOT --S1)</td></tr>
+    <tr><td class="usage">STAT GRID GAP</td><td class="value">3PX</td></tr>
+    <tr><td class="usage">MOBILE PADDING</td><td class="value">--S3 OR --S2 REPLACES --S4</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     4. ELEVATION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="elevation">
+  <div class="section-title"><span class="prefix">//</span> ELEVATION &amp; DEPTH</div>
+  <p class="desc">No box-shadow, text-shadow, or drop-shadow. Depth through background color layering only.</p>
+
+  <div class="elev-stack">
+    <div class="elev-layer" style="background:#080808;">
+      <div class="layer-num">0</div>
+      <div class="layer-name">BASE</div>
+      <div class="layer-hex">#080808</div>
+    </div>
+    <div class="elev-layer" style="background:#0e0e0e;">
+      <div class="layer-num">1</div>
+      <div class="layer-name">SURFACE</div>
+      <div class="layer-hex">#0E0E0E</div>
+    </div>
+    <div class="elev-layer" style="background:#111111;">
+      <div class="layer-num">2</div>
+      <div class="layer-name">PANEL</div>
+      <div class="layer-hex">#111111</div>
+    </div>
+    <div class="elev-layer" style="background:#161616;">
+      <div class="layer-num">3</div>
+      <div class="layer-name">RAISED</div>
+      <div class="layer-hex">#161616</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     5. BORDERS & CORNER MARKS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="borders">
+  <div class="section-title"><span class="prefix">//</span> BORDERS &amp; CORNER MARKS</div>
+
+  <div class="sub-title">BORDER STYLES</div>
+  <table class="token-table">
+    <tr><th>PATTERN</th><th>USAGE</th></tr>
+    <tr><td class="token">1px solid rgba(255,255,255,0.10)</td><td class="usage">Default panel/card</td></tr>
+    <tr><td class="token">1px solid rgba(255,255,255,0.06)</td><td class="usage">Table row separator</td></tr>
+    <tr><td class="token">1px solid rgba(255,255,255,0.16)</td><td class="usage">Strong (buttons)</td></tr>
+    <tr><td class="token">1px solid rgba(204,34,0,0.28)</td><td class="usage">Red accent active</td></tr>
+    <tr><td class="token">1px dashed rgba(255,255,255,0.10)</td><td class="usage">Boarding pass tear-line</td></tr>
+    <tr><td class="token">2px solid #cc2200</td><td class="usage">Active sidebar nav</td></tr>
+  </table>
+
+  <div class="sub-title">BORDER RADIUS</div>
+  <p class="desc" style="color:var(--t1);font-weight:700;">NONE. border-radius: 0 everywhere. Only exception: .dot (5px circle, border-radius: 50%).</p>
+
+  <div class="sub-title">CORNER MARK SYSTEM — LIVE DEMO</div>
+  <p class="desc">Hover over the panels below to see the state changes.</p>
+  <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:var(--s4);">
+    <div class="cm" style="background:var(--panel);border:1px solid var(--bd);padding:var(--s4) var(--s5);cursor:pointer;">
+      <div style="font-size:9px;color:var(--t3);letter-spacing:0.1em;">.CM DEFAULT</div>
+      <div style="font-size:11px;color:var(--t1);margin-top:4px;">HOVER ME</div>
+    </div>
+    <div class="cm cm-red" style="background:var(--panel);border:1px solid rgba(204,34,0,0.28);padding:var(--s4) var(--s5);">
+      <div style="font-size:9px;color:var(--t3);letter-spacing:0.1em;">.CM-RED</div>
+      <div style="font-size:11px;color:var(--red);margin-top:4px;">ALERT VARIANT</div>
+    </div>
+    <div class="stat" style="cursor:pointer;">
+      <div class="label">.STAT / .PANEL</div>
+      <div class="val" style="font-size:16px;">DEFAULT MARKS</div>
+    </div>
+  </div>
+
+  <table class="token-table">
+    <tr><th>VARIANT</th><th>SIZE</th><th>COLOR</th><th>TRIGGER</th></tr>
+    <tr><td class="token">.panel::before</td><td class="value">8px &times; 1.5px</td><td class="value">rgba(255,255,255,0.45)</td><td class="usage">Always</td></tr>
+    <tr><td class="token">.cm::before</td><td class="value">10px &times; 2px</td><td class="value">rgba(255,255,255,0.60)</td><td class="usage">Always</td></tr>
+    <tr><td class="token">.cm:hover</td><td class="value">10px &times; 2px</td><td class="value">rgba(204,34,0,0.85)</td><td class="usage">Hover</td></tr>
+    <tr><td class="token">.cm-red</td><td class="value">10px &times; 2px</td><td class="value">#cc2200</td><td class="usage">Always (alerts)</td></tr>
+    <tr><td class="token">.fcard:hover</td><td class="value">8px &times; 1.5px</td><td class="value">rgba(204,34,0,0.70)</td><td class="usage">Hover</td></tr>
+    <tr><td class="token">.fcard.on</td><td class="value">8px &times; 1.5px</td><td class="value">#cc2200</td><td class="usage">Selected</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     6. ANIMATIONS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="animations">
+  <div class="section-title"><span class="prefix">//</span> ANIMATIONS &amp; TRANSITIONS</div>
+
+  <table class="token-table">
+    <tr><th>NAME</th><th>DURATION</th><th>USAGE</th></tr>
+    <tr><td class="token">pulse</td><td class="value">2s infinite</td><td class="usage">System status dot opacity 1&rarr;0.3&rarr;1</td></tr>
+    <tr><td class="token">shimmer</td><td class="value">1.6s infinite</td><td class="usage">Skeleton loading bar gradient sweep</td></tr>
+    <tr><td class="token">pageFadeIn</td><td class="value">350ms ease-out</td><td class="usage">Page content entrance (translateY 6px)</td></tr>
+    <tr><td class="token">accordion</td><td class="value">280ms ease</td><td class="usage">Flight card detail expand/collapse</td></tr>
+    <tr><td class="token">drawer</td><td class="value">250ms ease</td><td class="usage">Mobile nav slide-in</td></tr>
+    <tr><td class="token">CTA color wipe</td><td class="value">150ms ease-in-out</td><td class="usage">::before scaleX center-expand on hover (V3)</td></tr>
+    <tr><td class="token">CTA bracket spread</td><td class="value">150ms ease-in-out</td><td class="usage">[[ and ]] translateX outward on hover</td></tr>
+    <tr><td class="token">msbar expand</td><td class="value">280ms ease</td><td class="usage">Mobile search form max-height reveal</td></tr>
+  </table>
+
+  <div class="sub-title">LIVE — CTA HOVER TRANSITIONS</div>
+  <p class="desc">Primary CTA uses center-expand (V3) color wipe + bracket spread. Hover below to preview.</p>
+  <div style="display:flex;gap:var(--s4);flex-wrap:wrap;align-items:center;margin-bottom:var(--s4);">
+    <button class="bk"><span class="bl">[[</span> SELECT FLIGHT <span class="br">]]</span></button>
+    <button class="bk" style="padding:7px 20px;"><span class="bl">[[</span> SELECT <span class="br">]]</span></button>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">COLOR FILL</span><span class="v">::before, scaleX(0)&rarr;1, transform-origin: center, 150ms ease-in-out</span></div>
+    <div class="comp-spec-row"><span class="k">BRACKET .BL</span><span class="v">margin-right: 5px, default: translateX(5px), hover: translateX(0)</span></div>
+    <div class="comp-spec-row"><span class="k">BRACKET .BR</span><span class="v">margin-left: 5px, default: translateX(-5px), hover: translateX(0)</span></div>
+    <div class="comp-spec-row"><span class="k">WIDTH STABILITY</span><span class="v">Margin pre-allocated, transform shifts visual only &mdash; no layout reflow</span></div>
+  </div>
+
+  <div class="sub-title">LIVE — SKELETON LOADING</div>
+  <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s4);">
+    <div class="skel-bar w80"></div>
+    <div class="skel-bar w60"></div>
+    <div class="skel-bar w40"></div>
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <div class="sub-title">LIVE — PULSE</div>
+  <div style="display:flex;align-items:center;gap:var(--s2);padding:var(--s2) 0;">
+    <div class="dot"></div>
+    <span style="font-size:9px;color:var(--t3);letter-spacing:0.1em;">SYS.ONLINE</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     7. COMPONENTS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="components">
+  <div class="section-title"><span class="prefix">//</span> COMPONENT LIBRARY</div>
+  <p class="desc">Live rendered snippets. All components are interactive — hover to see state changes.</p>
+
+  <!-- ─── TOPBAR ─── -->
+  <div class="sub-title">TOPBAR</div>
+  <div class="comp-showcase">
+    <div class="demo-topbar">
+      <div class="lm">S</div>
+      <span class="brand">STRATOS</span>
+      <span class="nl on">DASHBOARD</span>
+      <span class="nl">FLIGHTS</span>
+      <span class="nl">TRIPS</span>
+      <span class="nl">REPORTS</span>
+      <div class="tr">
+        <div class="dot"></div>
+        <span class="sys-label">SYS.ONLINE</span>
+        <div class="avatar">WA</div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">HEIGHT</span><span class="v">40px</span></div>
+    <div class="comp-spec-row"><span class="k">BACKGROUND</span><span class="v">#0e0e0e (--surf)</span></div>
+    <div class="comp-spec-row"><span class="k">BORDER</span><span class="v">border-bottom: 1px solid var(--bd)</span></div>
+    <div class="comp-spec-row"><span class="k">POSITION</span><span class="v">sticky, top: 0, z-index: 50</span></div>
+    <div class="comp-spec-row"><span class="k">LOGO (.lm)</span><span class="v">18&times;18px, border: 1px solid #cc2200</span></div>
+    <div class="comp-spec-row"><span class="k">NAV DEFAULT</span><span class="v">11px, color: #888, border: 1px solid transparent</span></div>
+    <div class="comp-spec-row"><span class="k">NAV HOVER</span><span class="v">color: #e0e0e0, border-color: var(--bd)</span></div>
+    <div class="comp-spec-row"><span class="k">NAV ACTIVE</span><span class="v">color: #cc2200, border-color: var(--redbd), bg: var(--redbg)</span></div>
+  </div>
+
+  <!-- ─── SIDEBAR ─── -->
+  <div class="sub-title">SIDEBAR</div>
+  <div class="comp-showcase" style="display:flex;gap:var(--s4);">
+    <div class="demo-sidebar">
+      <div class="nav-group-label">// OVERVIEW</div>
+      <a class="nav-link active">DASHBOARD</a>
+      <a class="nav-link">FLIGHTS <span class="nav-ct">24</span></a>
+      <a class="nav-link">TRIPS <span class="nav-ct">8</span></a>
+      <div class="nav-group-label">// MANAGE</div>
+      <a class="nav-link">TRAVELERS</a>
+      <a class="nav-link">REPORTS</a>
+      <a class="nav-link">SETTINGS</a>
+    </div>
+    <div class="comp-spec" style="flex:1;">
+      <div class="comp-spec-row"><span class="k">WIDTH</span><span class="v">200px</span></div>
+      <div class="comp-spec-row"><span class="k">BACKGROUND</span><span class="v">#0e0e0e (--surf)</span></div>
+      <div class="comp-spec-row"><span class="k">BORDER</span><span class="v">border-right: 1px solid var(--bd)</span></div>
+      <div class="comp-spec-row"><span class="k">NAV DEFAULT</span><span class="v">border-left: 2px solid transparent</span></div>
+      <div class="comp-spec-row"><span class="k">NAV ACTIVE</span><span class="v">border-left-color: #cc2200</span></div>
+      <div class="comp-spec-row"><span class="k">COUNTER</span><span class="v">bg: #161616, color: #555</span></div>
+    </div>
+  </div>
+
+  <!-- ─── STAT CARDS ─── -->
+  <div class="sub-title">STAT CARDS</div>
+  <div class="comp-showcase">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="label">TOTAL BOOKINGS</div>
+        <div class="val">1,247</div>
+        <div class="delta up">&uarr; 12.3%</div>
+      </div>
+      <div class="stat">
+        <div class="label">ACTIVE TRIPS</div>
+        <div class="val">38</div>
+        <div class="delta dn">&darr; 4.1%</div>
+      </div>
+      <div class="stat">
+        <div class="label">TOTAL SPEND</div>
+        <div class="val">$842K</div>
+        <div class="delta up">&uarr; 8.7%</div>
+      </div>
+      <div class="stat">
+        <div class="label">AVG COST</div>
+        <div class="val">$675</div>
+        <div class="delta fl">&mdash; 0.0%</div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">LAYOUT</span><span class="v">4-column grid, gap: 3px</span></div>
+    <div class="comp-spec-row"><span class="k">LABEL</span><span class="v">9px, #555, letter-spacing: 0.1em</span></div>
+    <div class="comp-spec-row"><span class="k">VALUE</span><span class="v">22px, 700, -0.03em, tabular-nums</span></div>
+    <div class="comp-spec-row"><span class="k">DELTA .UP</span><span class="v">color: #22a050</span></div>
+    <div class="comp-spec-row"><span class="k">DELTA .DN</span><span class="v">color: #cc2200</span></div>
+    <div class="comp-spec-row"><span class="k">DELTA .FL</span><span class="v">color: #555</span></div>
+  </div>
+
+  <!-- ─── BADGES ─── -->
+  <div class="sub-title">BADGES / TAGS</div>
+  <div class="comp-showcase" style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center;">
+    <span class="badge b-ok">&#10003; APPROVED</span>
+    <span class="badge b-warn">&#9992; IN TRANSIT</span>
+    <span class="badge b-red">&#9888; OVER POLICY</span>
+    <span class="badge b-dim">ECONOMY</span>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">.B-OK</span><span class="v">bg: rgba(34,160,80,0.10) / text: #22a050 / border: rgba(34,160,80,0.3)</span></div>
+    <div class="comp-spec-row"><span class="k">.B-WARN</span><span class="v">bg: rgba(200,144,32,0.10) / text: #c89020 / border: rgba(200,144,32,0.3)</span></div>
+    <div class="comp-spec-row"><span class="k">.B-RED</span><span class="v">bg: rgba(204,34,0,0.08) / text: #cc2200 / border: rgba(204,34,0,0.28)</span></div>
+    <div class="comp-spec-row"><span class="k">.B-DIM</span><span class="v">bg: rgba(255,255,255,0.04) / text: #555 / border: rgba(255,255,255,0.10)</span></div>
+  </div>
+
+  <!-- ─── BUTTONS ─── -->
+  <div class="sub-title">PRIMARY CTA (.BK)</div>
+  <p class="desc">Primary CTA uses .bk class with center-expand color wipe and bracket spread on hover. Brackets [[ and ]] are wrapped in .bl / .br spans. Width is pre-allocated via margin + transform trick — no layout shift on hover.</p>
+  <div class="comp-showcase" style="display:flex;gap:var(--s3);align-items:center;flex-wrap:wrap;">
+    <button class="bk"><span class="bl">[[</span> SELECT FLIGHT <span class="br">]]</span></button>
+    <button class="bk" style="padding:7px 20px;font-size:10px;"><span class="bl">[[</span> SELECT <span class="br">]]</span></button>
+    <button class="bk" style="width:180px;padding:10px;"><span class="bl">[[</span> CONFIRM <span class="br">]]</span></button>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">CLASS</span><span class="v">.bk (inline-flex, relative, overflow: hidden, z-index: 0)</span></div>
+    <div class="comp-spec-row"><span class="k">BG / COLOR</span><span class="v">bg: #cc2200, color: #fff, 11px/700, letter-spacing: 0.1em</span></div>
+    <div class="comp-spec-row"><span class="k">HOVER FILL</span><span class="v">::before scaleX(0)&rarr;1, origin: center, #ff3300, 150ms ease-in-out</span></div>
+    <div class="comp-spec-row"><span class="k">BRACKET .BL</span><span class="v">margin-right: 5px, translateX(5px) &rarr; hover: translateX(0)</span></div>
+    <div class="comp-spec-row"><span class="k">BRACKET .BR</span><span class="v">margin-left: 5px, translateX(-5px) &rarr; hover: translateX(0)</span></div>
+    <div class="comp-spec-row"><span class="k">WIDTH TRICK</span><span class="v">Margin pre-allocates space, transform shifts visual only &mdash; 0px reflow</span></div>
+    <div class="comp-spec-row"><span class="k">LABEL PATTERN</span><span class="v">&lt;span class="bl"&gt;[[&lt;/span&gt; LABEL &lt;span class="br"&gt;]]&lt;/span&gt;</span></div>
+  </div>
+
+  <div class="sub-title">SECONDARY BUTTON</div>
+  <div class="comp-showcase" style="display:flex;gap:var(--s3);align-items:center;">
+    <button class="btn-secondary">CANCEL</button>
+    <button class="btn-secondary">FILTER</button>
+    <button class="btn-secondary" style="font-size:9px;padding:4px 12px;">EXPORT</button>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">CLASS</span><span class="v">.btn-secondary</span></div>
+    <div class="comp-spec-row"><span class="k">STYLE</span><span class="v">bg: #111, border: 1px solid rgba(255,255,255,0.16), color: #888</span></div>
+    <div class="comp-spec-row"><span class="k">HOVER</span><span class="v">color: #e0e0e0, transition: 80ms</span></div>
+  </div>
+
+  <!-- ─── FILTER PILLS ─── -->
+  <div class="sub-title">FILTER PILLS</div>
+  <div class="comp-showcase" style="display:flex;gap:3px;flex-wrap:wrap;">
+    <span class="pill on">NON-STOP</span>
+    <span class="pill">1 STOP</span>
+    <span class="pill">2+ STOPS</span>
+    <span class="pill on">MORNING</span>
+    <span class="pill">AFTERNOON</span>
+    <span class="pill">EVENING</span>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">DEFAULT</span><span class="v">bg: #0e0e0e, border: var(--bd), color: #555</span></div>
+    <div class="comp-spec-row"><span class="k">ACTIVE (.ON)</span><span class="v">bg: var(--redbg), border: var(--redbd), color: #cc2200</span></div>
+  </div>
+
+  <!-- ─── SEARCH BAR ─── -->
+  <div class="sub-title">SEARCH BAR</div>
+  <div class="comp-showcase">
+    <div class="demo-search">
+      <div class="sf af">
+        <div class="sfl">FROM</div>
+        <div class="sfv">SINGAPORE (SIN)</div>
+        <div class="sfs">CHANGI AIRPORT</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);cursor:pointer;">&harr;</div>
+      <div class="sf">
+        <div class="sfl">TO</div>
+        <div class="sfv">SAN FRANCISCO (SFO)</div>
+        <div class="sfs">INTL AIRPORT</div>
+      </div>
+      <div class="sf">
+        <div class="sfl">DEPART</div>
+        <div class="sfv">APR 14</div>
+        <div class="sfs">MONDAY</div>
+      </div>
+      <div class="sf">
+        <div class="sfl">RETURN</div>
+        <div class="sfv">APR 21</div>
+        <div class="sfs">MONDAY</div>
+      </div>
+      <button class="btn-primary" style="padding:10px 20px;">SEARCH</button>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">BACKGROUND</span><span class="v">#0e0e0e, border-bottom: 1px solid var(--bd)</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD LABEL</span><span class="v">9px, #555, 0.1em</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD VALUE</span><span class="v">13px, 700, #e0e0e0</span></div>
+    <div class="comp-spec-row"><span class="k">ACTIVE (.AF)</span><span class="v">border: rgba(204,34,0,0.28), bg: rgba(204,34,0,0.06)</span></div>
+  </div>
+
+  <!-- ─── DATA TABLE ─── -->
+  <div class="sub-title">DATA TABLE</div>
+  <div class="comp-showcase">
+    <div class="demo-panel cm">
+      <div class="ph2"><span class="title">// RECENT TRIPS</span><button class="btn-secondary" style="font-size:9px;padding:4px 12px;">EXPORT</button></div>
+      <table class="demo-table">
+        <thead>
+          <tr><th>TRAVELER</th><th>ROUTE</th><th>DATE</th><th>COST</th><th>STATUS</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:var(--s2);"><div class="avatar" style="background:#1a3a5c;color:#4a8abf;">JT</div><div><div style="font-weight:700;">JAMES TAN</div><div class="muted">ENGINEERING</div></div></div></td>
+            <td><span class="route">SIN &rarr; SFO</span><div class="muted">SINGAPORE AIR</div></td>
+            <td>APR 8</td>
+            <td style="font-weight:700;">$3,240</td>
+            <td><span class="badge b-ok">&#10003; APPROVED</span></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:var(--s2);"><div class="avatar" style="background:#3a1a3a;color:#8a4a8a;">AL</div><div><div style="font-weight:700;">AMY LIM</div><div class="muted">SALES</div></div></div></td>
+            <td><span class="route">SIN &rarr; HKG &rarr; NRT</span><div class="muted">CATHAY PACIFIC</div></td>
+            <td>APR 10</td>
+            <td style="font-weight:700;">$1,890</td>
+            <td><span class="badge b-warn">&#9992; TRANSIT</span></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:var(--s2);"><div class="avatar" style="background:#1a3a1a;color:#4a8a4a;">RK</div><div><div style="font-weight:700;">RAJA KUMAR</div><div class="muted">FINANCE</div></div></div></td>
+            <td><span class="route">SIN &rarr; LHR</span><div class="muted">BRITISH AIRWAYS</div></td>
+            <td>APR 12</td>
+            <td style="font-weight:700;">$4,580</td>
+            <td><span class="badge b-red">&#9888; FLAGGED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">HEADER (TH)</span><span class="v">9px, #555, bg: #0e0e0e</span></div>
+    <div class="comp-spec-row"><span class="k">CELL (TD)</span><span class="v">11px, #e0e0e0, padding: 8px var(--s3)</span></div>
+    <div class="comp-spec-row"><span class="k">ROW BORDER</span><span class="v">1px solid rgba(255,255,255,0.06)</span></div>
+    <div class="comp-spec-row"><span class="k">ROW HOVER</span><span class="v">background: #161616</span></div>
+  </div>
+
+  <!-- ─── FLIGHT CARDS ─── -->
+  <div class="sub-title">FLIGHT CARDS</div>
+  <div class="comp-showcase">
+    <div class="fcard">
+      <div class="fc-logo">SQ</div>
+      <div class="fc-dep"><div class="fc-time">08:45</div><div class="fc-airport">SIN</div></div>
+      <div class="fc-route"><div class="dot-end"></div><div class="track"></div><div class="dot-end"></div></div>
+      <div class="fc-arr"><div class="fc-time">20:15</div><div class="fc-airport">SFO</div></div>
+      <div class="fc-tags"><div class="dur">17H 30M &middot; NON-STOP</div></div>
+      <div class="fc-price"><div class="pm">$3,240</div><div class="pp ok">IN POLICY</div></div>
+    </div>
+    <div class="fcard on">
+      <div class="fc-logo">CX</div>
+      <div class="fc-dep"><div class="fc-time">10:20</div><div class="fc-airport">SIN</div></div>
+      <div class="fc-route"><div class="dot-end"></div><div class="track"></div><div style="font-size:9px;color:var(--t3);padding:0 4px;">HKG</div><div class="track"></div><div class="dot-end"></div></div>
+      <div class="fc-arr"><div class="fc-time">22:50</div><div class="fc-airport">SFO</div></div>
+      <div class="fc-tags"><div class="dur">1 STOP &middot; 18H 30M</div></div>
+      <div class="fc-price"><div class="pm">$2,180</div><div class="pp ok">IN POLICY</div></div>
+    </div>
+    <div class="fcard">
+      <div class="fc-logo">UA</div>
+      <div class="fc-dep"><div class="fc-time">23:55</div><div class="fc-airport">SIN</div></div>
+      <div class="fc-route"><div class="dot-end"></div><div class="track"></div><div class="dot-end"></div></div>
+      <div class="fc-arr"><div class="fc-time">06:20</div><div class="fc-airport">SFO</div></div>
+      <div class="fc-tags"><div class="dur">16H 25M &middot; NON-STOP</div></div>
+      <div class="fc-price"><div class="pm">$4,580</div><div class="pp ov">OVER POLICY</div></div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">DEFAULT</span><span class="v">bg: #111, border: rgba(255,255,255,0.10), no corner marks</span></div>
+    <div class="comp-spec-row"><span class="k">HOVER</span><span class="v">red corner marks rgba(204,34,0,0.70)</span></div>
+    <div class="comp-spec-row"><span class="k">SELECTED (.ON)</span><span class="v">border: rgba(204,34,0,0.30), bg: rgba(204,34,0,0.03), solid red corners</span></div>
+    <div class="comp-spec-row"><span class="k">GAP</span><span class="v">margin-bottom: 3px</span></div>
+    <div class="comp-spec-row"><span class="k">ACCORDION</span><span class="v">max-height: 0 &rarr; 500px, transition: 280ms ease</span></div>
+  </div>
+
+  <!-- ─── BOARDING PASS ─── -->
+  <div class="sub-title">BOARDING PASS</div>
+  <div class="comp-showcase">
+    <div class="demo-bp">
+      <div class="bp-stub bp-stub-l">
+        <div class="bp-lbl">DEPARTURE</div>
+        <div class="bp-time">08:45</div>
+        <div class="bp-code">SIN</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:4px;">14 APR 2026</div>
+      </div>
+      <div class="bp-center">
+        <div class="bp-flight">SQ 322 &middot; SINGAPORE AIRLINES</div>
+        <div style="border-bottom:1px solid rgba(255,255,255,0.07);margin:var(--s2) 0;"></div>
+        <div class="bp-info">
+          <div class="bp-info-item"><div class="bp-info-lbl">CLASS</div><div class="bp-info-val">BUSINESS</div></div>
+          <div class="bp-info-item"><div class="bp-info-lbl">DURATION</div><div class="bp-info-val">17H 30M</div></div>
+          <div class="bp-info-item"><div class="bp-info-lbl">AIRCRAFT</div><div class="bp-info-val">A350-900</div></div>
+          <div class="bp-info-item"><div class="bp-info-lbl">SEAT</div><div class="bp-info-val">14A</div></div>
+        </div>
+      </div>
+      <div class="bp-stub bp-stub-r">
+        <div class="bp-lbl">ARRIVAL</div>
+        <div class="bp-time">20:15</div>
+        <div class="bp-code">SFO</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:4px;">14 APR 2026</div>
+      </div>
+    </div>
+    <div class="bp-foot">
+      <div><span style="font-size:9px;color:var(--t3);">BOOKING REF:</span> <span style="font-size:11px;font-weight:700;color:var(--t1);">XK7M2P</span></div>
+      <button class="bk" style="padding:7px 20px;"><span class="bl">[[</span> SELECT <span class="br">]]</span></button>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">LEFT STUB</span><span class="v">160px, bg: #0e0e0e, border-right: 1px dashed</span></div>
+    <div class="comp-spec-row"><span class="k">CENTER</span><span class="v">flex column — flight ID, separator, info grid</span></div>
+    <div class="comp-spec-row"><span class="k">RIGHT STUB</span><span class="v">160px, bg: #0e0e0e, border-left: 1px dashed</span></div>
+    <div class="comp-spec-row"><span class="k">FOOTER</span><span class="v">bg: #0e0e0e, booking ref + select CTA</span></div>
+    <div class="comp-spec-row"><span class="k">TIME</span><span class="v">22px bold, departure/arrival labels: #22a050</span></div>
+  </div>
+
+  <!-- ─── POLICY BANNER ─── -->
+  <div class="sub-title">POLICY BANNER</div>
+  <div class="comp-showcase">
+    <div class="pbn cm cm-red">&#9888; THIS FLIGHT EXCEEDS YOUR TRAVEL POLICY BUDGET BY $1,340. MANAGER APPROVAL REQUIRED.</div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">BACKGROUND</span><span class="v">rgba(204,34,0,0.08)</span></div>
+    <div class="comp-spec-row"><span class="k">BORDER</span><span class="v">1px solid rgba(204,34,0,0.28)</span></div>
+    <div class="comp-spec-row"><span class="k">TEXT</span><span class="v">#cc2200</span></div>
+    <div class="comp-spec-row"><span class="k">CORNER MARKS</span><span class="v">.cm-red — solid #cc2200</span></div>
+  </div>
+
+  <!-- ─── PANEL ─── -->
+  <div class="sub-title">PANEL</div>
+  <div class="comp-showcase">
+    <div class="demo-panel cm">
+      <div class="ph2">
+        <span class="title">// NOTIFICATIONS</span>
+        <div style="display:flex;gap:3px;">
+          <button class="btn-secondary" style="font-size:9px;padding:3px 10px;">ALL</button>
+          <button class="btn-secondary" style="font-size:9px;padding:3px 10px;background:var(--raise);color:var(--t1);">UNREAD</button>
+        </div>
+      </div>
+      <div class="body">
+        <div style="padding:var(--s2) 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:10px;"><span style="color:var(--t3);">14:30</span> &mdash; <span style="color:var(--t1);">BOOKING XK7M2P CONFIRMED</span></div>
+        <div style="padding:var(--s2) 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:10px;"><span style="color:var(--t3);">12:15</span> &mdash; <span style="color:var(--warn);">EXPENSE REPORT PENDING REVIEW</span></div>
+        <div style="padding:var(--s2) 0;font-size:10px;"><span style="color:var(--t3);">09:00</span> &mdash; <span style="color:var(--red);">POLICY VIOLATION FLAGGED</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">BACKGROUND</span><span class="v">#111111 (--panel)</span></div>
+    <div class="comp-spec-row"><span class="k">BORDER</span><span class="v">1px solid rgba(255,255,255,0.10)</span></div>
+    <div class="comp-spec-row"><span class="k">HEADER (.PH2)</span><span class="v">bg: #0e0e0e, border-bottom: 1px solid var(--bd)</span></div>
+    <div class="comp-spec-row"><span class="k">CORNER MARKS</span><span class="v">::before, hover turns red</span></div>
+    <div class="comp-spec-row"><span class="k">SEGMENTED</span><span class="v">1px gap, active: bg #161616, color #e0e0e0</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     8. NAMING & GLYPHS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="naming">
+  <div class="section-title"><span class="prefix">//</span> NAMING CONVENTIONS &amp; GLYPHS</div>
+
+  <table class="token-table">
+    <tr><th>PATTERN</th><th>EXAMPLE</th><th>USAGE</th></tr>
+    <tr><td class="token">// SECTION NAME</td><td class="value">// OVERVIEW</td><td class="usage">Section headers</td></tr>
+    <tr><td class="token">STRATOS // PAGE</td><td class="value">STRATOS // SETTINGS</td><td class="usage">Page titles</td></tr>
+    <tr><td class="token">IATA &rarr; IATA</td><td class="value">SIN &rarr; SFO</td><td class="usage">Route notation</td></tr>
+    <tr><td class="token">[[ LABEL ]]</td><td class="value">[[ SELECT FLIGHT ]]</td><td class="usage">CTA button labels</td></tr>
+    <tr><td class="token">17H 30M &middot; NON-STOP</td><td class="value">1 STOP &middot; 8H 15M</td><td class="usage">Duration &amp; stops</td></tr>
+    <tr><td class="token">$3,240</td><td class="value">SGD 4,380</td><td class="usage">Cost (tabular-nums)</td></tr>
+    <tr><td class="token">APR 8</td><td class="value">14 APR 2026 &middot; MON</td><td class="usage">Dates (abbr uppercase)</td></tr>
+  </table>
+
+  <div class="sub-title">TEXT GLYPHS</div>
+  <div style="display:flex;gap:3px;flex-wrap:wrap;">
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">&rarr;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">ROUTE</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">&rsaquo;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">BREADCRUMB</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">//</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">SECTION</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--ok);">&#10003;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">COMPLETE</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--warn);">&#9992;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">TRANSIT</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--red);">&#9888;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">WARNING</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">&middot;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">SEPARATOR</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">&#9662;</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">SORT</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:14px;color:var(--t1);">[[ ]]</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">CTA WRAP</div></div>
+    <div style="background:var(--panel);border:1px solid var(--bd);padding:var(--s2) var(--s4);text-align:center;min-width:80px;"><div style="font-size:18px;color:var(--t1);">+</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">ADD/CREATE</div></div>
+  </div>
+
+  <div class="sub-title" style="margin-top:var(--s5);">SVG ICON SIZES (PHOSPHOR ICONS)</div>
+  <table class="token-table">
+    <tr><th>SIZE</th><th>USAGE</th></tr>
+    <tr><td class="token">9PX</td><td class="usage">Inside badges</td></tr>
+    <tr><td class="token">11PX</td><td class="usage">Toolbar buttons, stat deltas</td></tr>
+    <tr><td class="token">12PX</td><td class="usage">Desktop nav, sidebar links</td></tr>
+    <tr><td class="token">14PX</td><td class="usage">Mobile nav links</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     9. MOBILE COMPONENTS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="mobile">
+  <div class="section-title"><span class="prefix">//</span> MOBILE COMPONENTS</div>
+  <p class="desc">Responsive components that appear at mobile breakpoints. Desktop search bar collapses into a compact summary with expandable form.</p>
+
+  <!-- ─── MOBILE SEARCH BAR ─── -->
+  <div class="sub-title">MOBILE SEARCH BAR (.MSBAR)</div>
+  <p class="desc">Collapsed state shows route summary + edit button. Tapping edit reveals the full search form via max-height transition (280ms ease).</p>
+  <div class="comp-showcase" style="max-width:400px;">
+    <div class="demo-msbar">
+      <div class="msbar-summary">
+        <div>
+          <div class="msbar-route">SIN &rarr; SFO</div>
+          <div class="msbar-meta">APR 14 &middot; 1 PAX &middot; ECONOMY</div>
+        </div>
+        <div class="msbar-edit">&darr;</div>
+      </div>
+      <div style="margin-top:var(--s3);">
+        <div class="msf-row">
+          <div class="msf-icon">&uarr;</div>
+          <div class="msf-body">
+            <div class="msf-label">FROM</div>
+            <div class="msf-val">SINGAPORE (SIN)</div>
+            <div class="msf-sub">CHANGI AIRPORT</div>
+          </div>
+        </div>
+        <div class="msf-row">
+          <div class="msf-icon">&darr;</div>
+          <div class="msf-body">
+            <div class="msf-label">TO</div>
+            <div class="msf-val">SAN FRANCISCO (SFO)</div>
+            <div class="msf-sub">INTL AIRPORT</div>
+          </div>
+        </div>
+        <div class="msf-row">
+          <div class="msf-icon">&#9783;</div>
+          <div class="msf-body">
+            <div class="msf-label">DEPART</div>
+            <div class="msf-val">APR 14</div>
+            <div class="msf-sub">MONDAY</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">CONTAINER</span><span class="v">bg: #0e0e0e, padding: var(--s3) var(--s4), display: none on desktop</span></div>
+    <div class="comp-spec-row"><span class="k">SUMMARY ROUTE</span><span class="v">13px, 700, #e0e0e0, letter-spacing: -0.01em</span></div>
+    <div class="comp-spec-row"><span class="k">SUMMARY META</span><span class="v">10px, #888</span></div>
+    <div class="comp-spec-row"><span class="k">EDIT BUTTON</span><span class="v">28&times;28px, bg: #111, border: 1px solid var(--bd)</span></div>
+    <div class="comp-spec-row"><span class="k">FORM EXPAND</span><span class="v">max-height: 0&rarr;400px, transition: 280ms ease</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD ICON</span><span class="v">20px wide, color: #555</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD LABEL</span><span class="v">9px, #555, letter-spacing: 0.1em</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD VALUE</span><span class="v">13px, 700, #e0e0e0</span></div>
+    <div class="comp-spec-row"><span class="k">FIELD SUB</span><span class="v">10px, #888</span></div>
+    <div class="comp-spec-row"><span class="k">ROW DIVIDER</span><span class="v">border-top: 1px solid rgba(255,255,255,0.06)</span></div>
+  </div>
+
+  <!-- ─── MOBILE HEADER ─── -->
+  <div class="sub-title">MOBILE HEADER</div>
+  <p class="desc">Simplified topbar for mobile. Hamburger menu replaces sidebar nav. Logo centered, avatar right.</p>
+  <div class="comp-showcase" style="max-width:400px;">
+    <div class="demo-topbar" style="padding:0 var(--s3);">
+      <div style="font-size:16px;color:var(--t2);cursor:pointer;">&#9776;</div>
+      <span class="brand" style="margin:0 auto;">STRATOS</span>
+      <div class="avatar" style="width:24px;height:24px;">WA</div>
+    </div>
+  </div>
+  <div class="comp-spec">
+    <div class="comp-spec-row"><span class="k">LAYOUT</span><span class="v">Hamburger left, logo center (margin: 0 auto), avatar right</span></div>
+    <div class="comp-spec-row"><span class="k">BREAKPOINT</span><span class="v">display: none above 768px, shown on mobile</span></div>
+    <div class="comp-spec-row"><span class="k">HAMBURGER</span><span class="v">16px, color: #888, cursor: pointer</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     10. DO / DON'T
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="rules">
+  <div class="section-title"><span class="prefix">//</span> DO / DON'T RULES</div>
+
+  <div class="sub-title" style="color:var(--ok);">DO</div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE #080808 AS BASE BACKGROUND — NOT PURE BLACK, NOT DARK GRAY</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">APPLY CORNER MARKS ON EVERY PANEL AND CARD — L-SHAPED BRACKETS ARE THE VISUAL SIGNATURE</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">SET ALL TEXT TO UPPERCASE — TEXT-TRANSFORM: UPPERCASE IS UNIVERSAL</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE 3PX GAPS BETWEEN STACKED CARDS — TIGHT REGISTER-LIKE DENSITY</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE THREE-TIER TEXT COLOR HIERARCHY: #E0E0E0 / #888888 / #555555</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE RGBA() FOR ALL BORDERS — WHITE WITH ALPHA, NEVER SOLID GRAY HEX</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE TABULAR-NUMS FOR ANY NUMERIC VALUE — PRICES, TIMES, COUNTS, PERCENTAGES</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">USE ::BEFORE SCALEX CENTER-EXPAND (150MS EASE-IN-OUT) ON CTAS — SNAPPY DIRECTIONAL WIPE</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">WRAP [[ AND ]] IN .BL / .BR SPANS — BRACKET SPREAD ON HOVER VIA TRANSLATEX</span></div>
+  <div class="rule"><span class="icon do">&#10003;</span><span class="text">PRE-ALLOCATE CTA WIDTH WITH MARGIN + TRANSFORM TRICK — NO LAYOUT SHIFT ON HOVER</span></div>
+
+  <div class="sub-title" style="color:var(--red);margin-top:var(--s5);">DON'T</div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">USE BORDER-RADIUS — ZERO ROUNDED CORNERS ANYWHERE</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">INTRODUCE NEW COLORS — PALETTE IS STRICTLY RED, GREEN, AMBER, WHITE-ALPHA</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">USE FONT WEIGHTS OTHER THAN 400 AND 700</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">ADD PADDING GREATER THAN --S6 (24PX) — SYSTEM IS DENSE</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">USE CENTERED BODY LAYOUTS — LEFT-ALIGNED, MAX-WIDTH 920–1200PX</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">USE ICONS WITHOUT TEXT LABELS (EXCEPT COMPACT MOBILE)</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">USE MORE THAN ONE #CC2200 CTA PER ROW — USE .TBTN FOR SECONDARY</span></div>
+  <div class="rule"><span class="icon dont">&#10007;</span><span class="text">ADD SHADOWS OR GLOWS — NO BOX-SHADOW, TEXT-SHADOW, DROP-SHADOW</span></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<div style="border-top:1px solid var(--bd);padding:var(--s4) 0;margin-top:var(--s6);display:flex;justify-content:space-between;">
+  <span style="font-size:9px;color:var(--t3);letter-spacing:0.1em;">STRATOS // DESIGN SYSTEM V1.1</span>
+  <span style="font-size:9px;color:var(--t3);letter-spacing:0.1em;">APRIL 2026</span>
+</div>
+
+</div><!-- /.guide -->
+</body>
+</html>
