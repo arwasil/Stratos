@@ -1,0 +1,10 @@
+.git/
+.github/
+.claude/
+.DS_Store
+**/.DS_Store
+DESIGN.md
+index-messy.html
+wrangler.jsonc
+.assetsignore
+node_modules/
